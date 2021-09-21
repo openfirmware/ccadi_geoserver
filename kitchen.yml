@@ -1,13 +1,9 @@
 ---
 driver:
   name: vagrant
-
-## The forwarded_port port feature lets you connect to ports on the VM guest via
-## localhost on the host.
-## see also: https://www.vagrantup.com/docs/networking/forwarded_ports
-
-#  network:
-#    - ["forwarded_port", {guest: 80, host: 8080}]
+  # Customization of the VM image used for this testing
+  customize:
+    memory: 8192
 
 provisioner:
   name: chef_zero
@@ -25,7 +21,10 @@ platforms:
 
 suites:
   - name: default
+    provisioner:
+      policyfile: Policyfile.rb
     verifier:
       inspec_tests:
         - test/integration/default
+    data_bags_path: test/integration/data_bags
     attributes:
