@@ -6,3 +6,7 @@
 describe package('fontconfig') do
   it { should be_installed }
 end
+
+describe directory('/opt/java/jdk-17') do
+  it { should exist }
+end
