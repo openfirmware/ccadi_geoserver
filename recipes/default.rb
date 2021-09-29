@@ -20,6 +20,15 @@ yum_package "epel-release"
 # See: https://blog.adoptopenjdk.net/2021/01/prerequisites-for-font-support-in-adoptopenjdk/
 yum_package %w[freetype fontconfig dejavu-sans-fonts]
 
+# RHEL/CentOS development tools for compiling source
+bash "install development tools" do
+  code <<-EOF
+    yum --assumeyes groups mark install "Development Tools"
+    yum --assumeyes groups mark convert "Development Tools"
+    yum --assumeyes groupinstall "Development Tools"
+  EOF
+end
+
 #################
 # Install OpenJDK
 #################
