@@ -13,6 +13,8 @@ end
 ##################
 # Preconfiguration
 ##################
+# Enable EPEL repository
+yum_package 'epel-release'
 
 # Install fontconfig for OpenJDK to have access to system fonts
 # See: https://blog.adoptopenjdk.net/2021/01/prerequisites-for-font-support-in-adoptopenjdk/
