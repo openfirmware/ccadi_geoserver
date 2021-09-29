@@ -1,3 +1,9 @@
+# Primary Attributes
+
+# One or more domains to map as virtual hosts in nginx to point to Tomcat on port 80
+# If certbot is enabled, then it will try to retrieve a certificate for each one.
+default["ccadi_geoserver"]["domains"] = ["geoserver.ccadi.gswlab.ca"]
+
 # For some tasks that can be parallelized, this many "jobs" should be used.
 # This should probably match the number of cores/VCPUs.
 default["jobs"] = 2
@@ -18,3 +24,9 @@ default["tomcat"]["prefix"] = "/opt/tomcat"
 default["tomcat"]["download_url"] = "https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.11/bin/apache-tomcat-10.0.11.tar.gz"
 default["tomcat"]["checksum_url"] = "https://downloads.apache.org/tomcat/tomcat-10/v10.0.11/bin/apache-tomcat-10.0.11.tar.gz.sha512"
 default["tomcat"]["checksum_type"] = "SHA512"
+
+
+# Certbot
+default["certbot"]["enabled"] = true
+default["certbot"]["email"] = "jpbadger@ucalgary.ca"
+

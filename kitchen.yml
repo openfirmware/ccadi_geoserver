@@ -2,6 +2,8 @@
 driver:
   name: vagrant
   # Customization of the VM image used for this testing
+  network:
+    - ["private_network", { ip: "192.168.33.190" }]
   customize:
     memory: 8192
 
@@ -28,3 +30,5 @@ suites:
         - test/integration/default
     data_bags_path: test/integration/data_bags
     attributes:
+      certbot:
+        enabled: false

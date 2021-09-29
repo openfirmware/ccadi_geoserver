@@ -36,3 +36,29 @@ describe service('tomcat') do
   it { should be_enabled }
   it { should be_running }
 end
+
+###############
+# Install nginx
+###############
+
+describe package('nginx') do
+  it { should be_installed }
+end
+
+describe service('nginx') do
+  it { should be_installed }
+  it { should be_enabled }
+  it { should be_running }
+end
+
+describe package('certbot') do
+  it { should be_installed }
+end
+
+describe package('python2-certbot-nginx') do
+  it { should be_installed }
+end
+
+describe file('/etc/ssl/certs/fake-geoserver.ccadi.gswlab.ca.crt') do
+  it { should exist }
+end
