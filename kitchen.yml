@@ -29,6 +29,8 @@ suites:
       inspec_tests:
         - test/integration/default
     data_bags_path: test/integration/data_bags
+    # These values will OVERRIDE settings in attributes/default.rb. Use this for values that must
+    # be set in non-production environments.
     attributes:
       certbot:
         enabled: false

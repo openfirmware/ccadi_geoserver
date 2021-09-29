@@ -62,3 +62,11 @@ end
 describe file('/etc/ssl/certs/fake-geoserver.ccadi.gswlab.ca.crt') do
   it { should exist }
 end
+
+describe file('/etc/nginx/conf.d/geoserver-http.conf') do
+  it { should exist }
+end
+
+describe file('/etc/nginx/conf.d/geoserver-https.conf') do
+  it { should exist }
+end

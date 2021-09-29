@@ -29,4 +29,4 @@ default["tomcat"]["checksum_type"] = "SHA512"
 # Certbot
 default["certbot"]["enabled"] = true
 default["certbot"]["email"] = "jpbadger@ucalgary.ca"
-
+default["certbot"]["challenge_path"] = "/usr/share/nginx/html/.well-known/acme-challenge"
