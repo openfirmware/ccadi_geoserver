@@ -228,12 +228,14 @@ bash "extract sqlite" do
   not_if { ::File.exists?(sqlite_src_dir) }
 end
 
+log "Compiling SQLite, this may take a minute"
+
 # Compile the source code for SQLite. For explanation of flags used, see:
 # https://sqlite.org/compile.html
 bash "compile sqlite" do
   cwd sqlite_src_dir
   code <<-EOH
-    ./configure --prefix="#{sqlite_prefix}" --disable-static \
+    ./configure --prefix="#{sqlite_prefix}" \
       CFLAGS="-g -O2                   \
       -DSQLITE_ENABLE_FTS5=1           \
       -DSQLITE_ENABLE_GEOPOLY=1        \
@@ -250,7 +252,61 @@ bash "compile sqlite" do
   not_if { ::File.exist?("#{sqlite_prefix}/bin/sqlite3") }
 end
 
-# Install Proj4 from source
+# Install PROJ from source
+yum_package %w[libtiff libtiff-devel curl libcurl libcurl-devel]
+
+proj_prefix = node["proj"]["prefix"]
+
+directory proj_prefix do
+  recursive true
+  action :create
+end
+
+proj_filename = filename_from_url(node["proj"]["download_url"])
+
+remote_file "#{Chef::Config["file_cache_path"]}/#{proj_filename}" do
+  source node["proj"]["download_url"]
+end
+
+proj_src_dir = "/opt/src/proj-8.1.1"
+
+bash "extract PROJ" do
+  cwd "/opt/src"
+  code <<-EOH
+    tar xzf "#{Chef::Config["file_cache_path"]}/#{proj_filename}" -C .
+  EOH
+  not_if { ::File.exists?(proj_src_dir) }
+end
+
+log "Compiling PROJ, this may take a few minutes"
+
+
+# Note that PATH must be set for proj.db to compile properly.
+# See: https://github.com/OSGeo/PROJ/issues/2071
+bash "compile PROJ" do
+  cwd proj_src_dir
+  environment({
+    "MAKEFLAGS"      => "-j #{node["jobs"]}",
+    "PATH"           => "/opt/local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin",
+    "SQLITE3_CFLAGS" => "-I/opt/local/include",
+    "SQLITE3_LIBS"   => "-L/opt/local/lib -lsqlite3"
+  })
+  code <<-EOH
+    ./configure --prefix="#{proj_prefix}"
+    make
+    make install
+  EOH
+
+  not_if { ::File.exist?("#{proj_prefix}/bin/proj") }
+end
+
+log "Downloading PROJ data files, this may take a few minutes"
+
+# These are helper files for datum and transformations, and we download them now rather than
+# on-the-fly. They are stored in "$proj_prefix/share/proj".
+execute "download PROJ data files" do
+  command "/opt/local/bin/projsync --system-directory --all"
+end
 
 # Install GeoServer
 

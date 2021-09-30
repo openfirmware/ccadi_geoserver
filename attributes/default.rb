@@ -33,3 +33,9 @@ default["certbot"]["challenge_path"] = "/usr/share/nginx/html/.well-known/acme-c
 # SQLite
 default["sqlite"]["download_url"] = "https://sqlite.org/2021/sqlite-autoconf-3360000.tar.gz"
 default["sqlite"]["prefix"] = "/opt/local"
+
+# PROJ
+default["proj"]["download_url"] = "https://download.osgeo.org/proj/proj-8.1.1.tar.gz"
+default["proj"]["checksum_url"] = "https://download.osgeo.org/proj/proj-8.1.1.tar.gz.md5"
+default["proj"]["checksum_type"] = "MD5"
+default["proj"]["prefix"] = "/opt/local"
