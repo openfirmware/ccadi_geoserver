@@ -70,3 +70,16 @@ end
 describe file('/etc/nginx/conf.d/geoserver-https.conf') do
   it { should exist }
 end
+
+##########################
+# Install GDAL and friends
+##########################
+
+describe directory("/opt/src") do
+  it { should exist }
+end
+
+describe file("/opt/local/bin/sqlite3") do
+  it {should exist }
+  it {should be_executable }
+end

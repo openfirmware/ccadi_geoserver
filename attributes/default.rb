@@ -25,8 +25,11 @@ default["tomcat"]["download_url"] = "https://dlcdn.apache.org/tomcat/tomcat-10/v
 default["tomcat"]["checksum_url"] = "https://downloads.apache.org/tomcat/tomcat-10/v10.0.11/bin/apache-tomcat-10.0.11.tar.gz.sha512"
 default["tomcat"]["checksum_type"] = "SHA512"
 
-
 # Certbot
 default["certbot"]["enabled"] = true
 default["certbot"]["email"] = "jpbadger@ucalgary.ca"
 default["certbot"]["challenge_path"] = "/usr/share/nginx/html/.well-known/acme-challenge"
+
+# SQLite
+default["sqlite"]["download_url"] = "https://sqlite.org/2021/sqlite-autoconf-3360000.tar.gz"
+default["sqlite"]["prefix"] = "/opt/local"

@@ -9,6 +9,7 @@ Installs:
 * [Apache Tomcat 10.0][tomcat]
 	* Apache [Tomcat native][tomcat-native] plugins
 * [GDAL 3][gdal]
+	* SQLite 3.36.0
 * [GeoServer 2.19][geoserver]
 	* "GDAL" extension
 	* "[Importer][importer]" extension

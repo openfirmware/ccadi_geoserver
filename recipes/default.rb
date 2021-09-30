@@ -27,6 +27,8 @@ bash "install development tools" do
     yum --assumeyes groups mark convert "Development Tools"
     yum --assumeyes groupinstall "Development Tools"
   EOF
+
+  not_if 'yum groups list | grep -q "Development Tools"'
 end
 
 #################
@@ -188,7 +190,67 @@ template "/etc/nginx/conf.d/geoserver-https.conf" do
   notifies :reload, "service[nginx]"
 end
 
-# Install GDAL
+##########################
+# Install GDAL and friends
+##########################
+
+# Set up install directory
+directory "/opt/local" do
+  action :create
+end
+
+# Set up source directory
+directory "/opt/src" do
+  action :create
+end
+
+# Install SQLite for Proj4
+sqlite_prefix = node["sqlite"]["prefix"]
+
+directory sqlite_prefix do
+  recursive true
+  action :create
+end
+
+sqlite_filename = filename_from_url(node["sqlite"]["download_url"])
+
+remote_file "#{Chef::Config["file_cache_path"]}/#{sqlite_filename}" do
+  source node["sqlite"]["download_url"]
+end
+
+sqlite_src_dir = "/opt/src/sqlite-autoconf-3360000"
+
+bash "extract sqlite" do
+  cwd "/opt/src"
+  code <<-EOH
+    tar xzf "#{Chef::Config["file_cache_path"]}/#{sqlite_filename}" -C .
+  EOH
+  not_if { ::File.exists?(sqlite_src_dir) }
+end
+
+# Compile the source code for SQLite. For explanation of flags used, see:
+# https://sqlite.org/compile.html
+bash "compile sqlite" do
+  cwd sqlite_src_dir
+  code <<-EOH
+    ./configure --prefix="#{sqlite_prefix}" --disable-static \
+      CFLAGS="-g -O2                   \
+      -DSQLITE_ENABLE_FTS5=1           \
+      -DSQLITE_ENABLE_GEOPOLY=1        \
+      -DSQLITE_ENABLE_JSON1=1          \
+      -DSQLITE_ENABLE_MATH_FUNCTIONS=1 \
+      -DSQLITE_ENABLE_RTREE=1          \
+      -DSQLITE_SQS=0                   \
+      -DSQLITE_OMIT_DEPRECATED=1       \
+      -DSQLITE_ENABLE_UNLOCK_NOTIFY=1"
+    make
+    make install
+  EOH
+
+  not_if { ::File.exist?("#{sqlite_prefix}/bin/sqlite3") }
+end
+
+# Install Proj4 from source
 
 # Install GeoServer
 
