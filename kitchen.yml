@@ -5,7 +5,8 @@ driver:
   network:
     - ["private_network", { ip: "192.168.33.190" }]
   customize:
-    memory: 8192
+    cpus: 6
+    memory: 16384
 
 provisioner:
   name: chef_zero
@@ -34,3 +35,4 @@ suites:
     attributes:
       certbot:
         enabled: false
+      jobs: 6

@@ -6,7 +6,7 @@ default["ccadi_geoserver"]["domains"] = ["geoserver.ccadi.gswlab.ca"]
 
 # For some tasks that can be parallelized, this many "jobs" should be used.
 # This should probably match the number of cores/VCPUs.
-default["jobs"] = 2
+default["jobs"] = 4
 
 # OpenJDK
 default["openjdk"]["version"] = "17"
