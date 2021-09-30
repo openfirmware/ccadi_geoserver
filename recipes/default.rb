@@ -27,8 +27,6 @@ bash "install development tools" do
     yum --assumeyes groups mark convert "Development Tools"
     yum --assumeyes groupinstall "Development Tools"
   EOF
-
-  not_if 'yum groups list | grep -q "Development Tools"'
 end
 
 #################
