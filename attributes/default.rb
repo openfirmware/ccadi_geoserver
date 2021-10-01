@@ -3,6 +3,8 @@
 # One or more domains to map as virtual hosts in nginx to point to Tomcat on port 80
 # If certbot is enabled, then it will try to retrieve a certificate for each one.
 default["ccadi_geoserver"]["domains"] = ["geoserver.ccadi.gswlab.ca"]
+# Location to store source files for compilation
+default["ccadi_geoserver"]["source_path"] = "/opt/src"
 
 # For some tasks that can be parallelized, this many "jobs" should be used.
 # This should probably match the number of cores/VCPUs.
@@ -39,3 +41,10 @@ default["proj"]["download_url"] = "https://download.osgeo.org/proj/proj-8.1.1.ta
 default["proj"]["checksum_url"] = "https://download.osgeo.org/proj/proj-8.1.1.tar.gz.md5"
 default["proj"]["checksum_type"] = "MD5"
 default["proj"]["prefix"] = "/opt/local"
+
+# Ant
+default["ant"]["version"] = "1.10.11"
+default["ant"]["prefix"] = "/opt/java"
+default["ant"]["download_url"] = "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.11-bin.tar.gz"
+default["ant"]["checksum_url"] = "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.11-bin.tar.gz.sha512"
+default["ant"]["checksum_type"] = "SHA512"

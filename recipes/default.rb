@@ -10,6 +10,9 @@ def filename_from_url(url)
   File.basename(uri.path)
 end
 
+# Where source code will be stored for compilation
+src_path = node["ccadi_geoserver"]["source_path"]
+
 ##################
 # Preconfiguration
 ##################
@@ -205,7 +208,7 @@ template "/etc/nginx/conf.d/geoserver-https.conf" do
 end
 
 ##########################
-# Install GDAL and friends
+# Install GDAL and support
 ##########################
 
 # Set up install directory
@@ -214,7 +217,7 @@ directory "/opt/local" do
 end
 
 # Set up source directory
-directory "/opt/src" do
+directory src_path do
   action :create
 end
 
@@ -232,10 +235,10 @@ remote_file "#{Chef::Config["file_cache_path"]}/#{sqlite_filename}" do
   source node["sqlite"]["download_url"]
 end
 
-sqlite_src_dir = "/opt/src/sqlite-autoconf-3360000"
+sqlite_src_dir = "#{src_path}/sqlite-autoconf-3360000"
 
 bash "extract sqlite" do
-  cwd "/opt/src"
+  cwd src_path
   code <<-EOH
     tar xzf "#{Chef::Config["file_cache_path"]}/#{sqlite_filename}" -C .
   EOH
@@ -282,10 +285,10 @@ remote_file "#{Chef::Config["file_cache_path"]}/#{proj_filename}" do
   source node["proj"]["download_url"]
 end
 
-proj_src_dir = "/opt/src/proj-8.1.1"
+proj_src_dir = "#{src_path}/proj-8.1.1"
 
 bash "extract PROJ" do
-  cwd "/opt/src"
+  cwd src_path
   code <<-EOH
     tar xzf "#{Chef::Config["file_cache_path"]}/#{proj_filename}" -C .
   EOH
@@ -322,6 +325,38 @@ execute "download PROJ data files" do
   command "/opt/local/bin/projsync --system-directory --all"
 end
 
+# Install Apache Ant for Java GDAL bindings
+ant_home = "#{node["ant"]["prefix"]}/apache-ant-#{node["ant"]["version"]}"
+ant_filename = filename_from_url(node["ant"]["download_url"])
+
+directory node["ant"]["prefix"] do
+  recursive true
+  action :create
+end
+
+remote_file "#{Chef::Config["file_cache_path"]}/#{ant_filename}" do
+  source node["ant"]["download_url"]
+end
+
+# This is a binary, so we can extract directly to the prefix
+bash "extract ant archive" do
+  cwd node["ant"]["prefix"]
+  code <<-EOH
+    tar xzf "#{Chef::Config["file_cache_path"]}/#{ant_filename}" -C .
+  EOH
+  not_if { ::File.exists?(ant_home) }
+end
+
+execute "Install Apache Ant library dependencies" do
+  command "#{ant_home}/bin/ant -f fetch.xml -Ddest=system"
+  cwd ant_home
+  environment({
+    "ANT_HOME"  => ant_home,
+    "JAVA_HOME" => java_home
+  })
+end
+
+# Install GDAL from source
 # Install GeoServer
 
 # Install GeoServer Plugins
