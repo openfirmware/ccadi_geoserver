@@ -16,6 +16,22 @@ end
 # Enable EPEL repository
 yum_package "epel-release"
 
+# Update packages
+execute "yum update" do
+  command "yum update --assumeyes"
+end
+
+# Fix certificate bug in RHEL/CentOS
+# https://blog.devgenius.io/rhel-centos-7-fix-for-lets-encrypt-change-8af2de587fe4
+execute "fix certificates" do
+  command 'trust dump --filter "pkcs11:id=%c4%a7%b1%a4%7b%2c%71%fa%db%e1%4b%90%75%ff%c4%15%60%85%89%10" | openssl x509 | sudo tee /etc/pki/ca-trust/source/blacklist/DST-Root-CA-X3.pem'
+  ignore_failure true
+end
+
+execute "update root store" do
+  command "update-ca-trust extract"
+end
+
 # Install fontconfig for OpenJDK to have access to system fonts
 # See: https://blog.adoptopenjdk.net/2021/01/prerequisites-for-font-support-in-adoptopenjdk/
 yum_package %w[freetype fontconfig dejavu-sans-fonts]
