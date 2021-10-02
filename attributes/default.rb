@@ -48,3 +48,10 @@ default["ant"]["prefix"] = "/opt/java"
 default["ant"]["download_url"] = "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.11-bin.tar.gz"
 default["ant"]["checksum_url"] = "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.11-bin.tar.gz.sha512"
 default["ant"]["checksum_type"] = "SHA512"
+
+# GDAL
+default["gdal"]["version"] = "3.3.2"
+default["gdal"]["download_url"] = "https://github.com/OSGeo/gdal/releases/download/v3.3.2/gdal-3.3.2.tar.gz"
+default["gdal"]["checksum_url"] = "https://github.com/OSGeo/gdal/releases/download/v3.3.2/gdal-3.3.2.tar.gz.md5"
+default["gdal"]["checksum_type"] = "MD5"
+default["gdal"]["prefix"] = "/opt/local"

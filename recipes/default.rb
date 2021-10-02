@@ -297,7 +297,6 @@ end
 
 log "Compiling PROJ, this may take a few minutes"
 
-
 # Note that PATH must be set for proj.db to compile properly.
 # See: https://github.com/OSGeo/PROJ/issues/2071
 bash "compile PROJ" do
@@ -357,6 +356,48 @@ execute "Install Apache Ant library dependencies" do
 end
 
 # Install GDAL from source
+gdal_prefix = node["gdal"]["prefix"]
+
+directory gdal_prefix do
+  recursive true
+  action :create
+end
+
+gdal_filename = filename_from_url(node["gdal"]["download_url"])
+
+remote_file "#{Chef::Config["file_cache_path"]}/#{gdal_filename}" do
+  source node["gdal"]["download_url"]
+end
+
+gdal_src_dir = "#{src_path}/gdal-#{node["gdal"]["version"]}"
+
+bash "extract GDAL" do
+  cwd src_path
+  code <<-EOH
+    tar xzf "#{Chef::Config["file_cache_path"]}/#{gdal_filename}" -C .
+  EOH
+  not_if { ::File.exists?(gdal_src_dir) }
+end
+
+log "Compiling GDAL, this may take a few minutes"
+
+bash "compile GDAL" do
+  cwd gdal_src_dir
+  environment({
+    "MAKEFLAGS"      => "-j #{node["jobs"]}",
+    "PATH"           => "/opt/local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+  })
+  code <<-EOH
+    ./configure --prefix="#{gdal_prefix}" \
+      --with-proj="#{proj_prefix}"        \
+      --with-sqlite3="#{sqlite_prefix}"
+    make
+    make install
+  EOH
+
+  not_if { ::File.exist?("#{gdal_prefix}/bin/gdalinfo") }
+end
+
 # Install GeoServer
 
 # Install GeoServer Plugins
