@@ -384,18 +384,25 @@ log "Compiling GDAL, this may take a few minutes"
 bash "compile GDAL" do
   cwd gdal_src_dir
   environment({
-    "MAKEFLAGS"      => "-j #{node["jobs"]}",
-    "PATH"           => "/opt/local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+    "MAKEFLAGS" => "-j #{node["jobs"]}",
+    "PATH"      => "#{ant_home}/bin:/opt/local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin",
+    "ANT_HOME"  => ant_home,
+    "JAVA_HOME" => java_home
   })
   code <<-EOH
     ./configure --prefix="#{gdal_prefix}" \
       --with-proj="#{proj_prefix}"        \
-      --with-sqlite3="#{sqlite_prefix}"
+      --with-sqlite3="#{sqlite_prefix}"   \
+      --with-java="#{java_home}"
+    make
+    make install
+
+    cd swig/java
     make
     make install
   EOH
 
-  not_if { ::File.exist?("#{gdal_prefix}/bin/gdalinfo") }
+  not_if "#{gdal_prefix}/bin/gdal-config --version | grep -q '#{node["gdal"]["version"]}'"
 end
 
 # Install GeoServer
