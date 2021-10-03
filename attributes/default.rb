@@ -18,13 +18,13 @@ default["openjdk"]["checksum_url"] = "https://download.java.net/java/GA/jdk17/0d
 default["openjdk"]["checksum_type"] = "SHA256"
 
 # Apache Tomcat
-default["tomcat"]["version"] = "10.0.11"
+default["tomcat"]["version"] = "9.0.53"
 default["tomcat"]["user"] = "tomcat"
 default["tomcat"]["Xms"] = "256m"
 default["tomcat"]["Xmx"] = "4g"
 default["tomcat"]["prefix"] = "/opt/tomcat"
-default["tomcat"]["download_url"] = "https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.11/bin/apache-tomcat-10.0.11.tar.gz"
-default["tomcat"]["checksum_url"] = "https://downloads.apache.org/tomcat/tomcat-10/v10.0.11/bin/apache-tomcat-10.0.11.tar.gz.sha512"
+default["tomcat"]["download_url"] = "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz"
+default["tomcat"]["checksum_url"] = "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz.sha512"
 default["tomcat"]["checksum_type"] = "SHA512"
 
 # Certbot

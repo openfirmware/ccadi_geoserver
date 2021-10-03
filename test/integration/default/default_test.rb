@@ -27,7 +27,7 @@ end
 # Install Tomcat
 ################
 
-describe directory('/opt/tomcat/apache-tomcat-10.0.11') do
+describe directory('/opt/tomcat/apache-tomcat-9.0.53') do
   it { should exist }
 end
 

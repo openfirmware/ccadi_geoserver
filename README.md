@@ -6,7 +6,7 @@ Installs:
 
 * [OpenJDK 17][]
 * [Nginx][nginx]
-* [Apache Tomcat 10.0][tomcat]
+* [Apache Tomcat 9][tomcat]
 	* Apache [Tomcat native][tomcat-native] plugins
 * [GDAL 3][gdal]
 	* PROJ 8.1.1
