@@ -499,6 +499,7 @@ end
 #################################
 # Install GeoServer NetCDF Plugin
 #################################
+yum_package %w[netcdf netcdf-devel netcdf-cxx netcdf-cxx-devel]
 
 geoserver_netcdf_filename = filename_from_url(node["geoserver"]["netcdf_plugin"]["download_url"])
 
