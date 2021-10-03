@@ -27,6 +27,13 @@ default["tomcat"]["download_url"]  = "https://dlcdn.apache.org/tomcat/tomcat-9/v
 default["tomcat"]["checksum_url"]  = "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz.sha512"
 default["tomcat"]["checksum_type"] = "SHA512"
 
+# Apache Tomcat native plugin
+default["tomcat-native"]["version"]       = "1.2.31"
+default["tomcat-native"]["prefix"]        = "/opt/tomcat"
+default["tomcat-native"]["download_url"]  = "https://dlcdn.apache.org/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz"
+default["tomcat-native"]["checksum_url"]  = "https://dlcdn.apache.org/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz.sha512"
+default["tomcat-native"]["checksum_type"] = "SHA512"
+
 # Certbot
 default["certbot"]["enabled"]        = true
 default["certbot"]["email"]          = "jpbadger@ucalgary.ca"

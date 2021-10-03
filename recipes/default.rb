@@ -528,6 +528,56 @@ bash "extract GeoServer NetCDF plugin" do
   not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-netcdf-#{node["geoserver"]["version"]}.jar") }
 end
 
+######################
+# Set up tomcat-native
+######################
 
-# Auto-configure GeoServer
+tomcat_native_home = "#{node["tomcat"]["prefix"]}/tomcat-native-#{node["tomcat-native"]["version"]}-src"
+tomcat_native_filename = filename_from_url(node["tomcat-native"]["download_url"])
 
+remote_file "#{Chef::Config["file_cache_path"]}/#{tomcat_native_filename}" do
+  source node["tomcat-native"]["download_url"]
+end
+
+bash "extract tomcat-native" do
+  cwd node["tomcat"]["prefix"]
+  user node["tomcat"]["user"]
+  code <<-EOH
+    tar xzf "#{Chef::Config["file_cache_path"]}/#{tomcat_native_filename}" -C .
+  EOH
+  not_if { ::File.exists?(tomcat_native_home) }
+end
+
+yum_package %w[apr-devel openssl-devel]
+
+# Compile tomcat-native
+log "Compiling tomcat-native, which may take a few minutes"
+bash "compile tomcat-native" do
+  cwd "#{tomcat_native_home}/native"
+  environment({
+    "MAKEFLAGS" => "-j #{node["jobs"]}",
+    "JAVA_HOME" => java_home
+  })
+  code <<-EOH
+    ./configure --prefix=#{tomcat_home}
+    make
+    make install
+  EOH
+  not_if { ::File.exists?("#{tomcat_home}/lib/libtcnative-1.so") }
+  notifies :restart, "service[tomcat]"
+end
+
+package %w(libtiff-tools)
+
+# Install extra CRS definitions
+cookbook_file "#{geoserver_data}/user_projections/epsg.properties" do
+  source "epsg.properties"
+  owner node["tomcat"]["user"]
+  group node["tomcat"]["user"]
+  notifies :restart, "service[tomcat]"
+end
+
+#####################
+# Customize GeoServer
+#####################
+# TODO
