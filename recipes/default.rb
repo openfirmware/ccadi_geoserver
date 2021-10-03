@@ -122,9 +122,9 @@ systemd_unit "tomcat.service" do
   Environment="CATALINA_HOME=#{tomcat_home}"
   Environment="CATALINA_BASE=#{tomcat_home}"
   Environment="CATALINA_OPTS="
-  Environment="GDAL_DATA=/usr/local/share/gdal"
+  Environment="GDAL_DATA=#{node["gdal"]["prefix"]}/share/gdal"
   Environment="LD_LIBRARY_PATH=$LD_LIBRARY_PATH:#{tomcat_home}/lib"
-  Environment="JAVA_OPTS=-Dfile.encoding=UTF-8 -Djava.library.path=/usr/local/lib:#{tomcat_home}/lib -Xms#{node["tomcat"]["Xms"]} -Xmx#{node["tomcat"]["Xmx"]}"
+  Environment="JAVA_OPTS=-Dfile.encoding=UTF-8 -Djava.library.path=/usr/local/lib:/opt/local/lib:#{tomcat_home}/lib -Xms#{node["tomcat"]["Xms"]} -Xmx#{node["tomcat"]["Xmx"]}"
   ExecStart=#{tomcat_home}/bin/startup.sh
   ExecStop=/bin/kill -15 $MAINPID
   [Install]
@@ -405,9 +405,64 @@ bash "compile GDAL" do
   not_if "#{gdal_prefix}/bin/gdal-config --version | grep -q '#{node["gdal"]["version"]}'"
 end
 
+###################
 # Install GeoServer
+###################
+geoserver_data = "#{tomcat_home}/webapps/geoserver/data"
 
-# Install GeoServer Plugins
+directory node["geoserver"]["prefix"] do
+  recursive true
+  action :create
+end
+
+geoserver_filename = filename_from_url(node["geoserver"]["download_url"])
+
+remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_filename}" do
+  source node["geoserver"]["download_url"]
+end
+
+yum_package "unzip"
+
+bash "extract GeoServer" do
+  cwd "#{tomcat_home}/webapps"
+  user node["tomcat"]["user"]
+  code <<-EOH
+    unzip -o "#{Chef::Config["file_cache_path"]}/#{geoserver_filename}" -d .
+  EOH
+  not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver.war") }
+  notifies :restart, 'service[tomcat]'
+end
+
+###############################
+# Install GeoServer GDAL Plugin
+###############################
+
+geoserver_gdal_filename = filename_from_url(node["geoserver"]["gdal_plugin"]["download_url"])
+
+remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_gdal_filename}" do
+  source node["geoserver"]["gdal_plugin"]["download_url"]
+end
+
+# Extract GDAL plugin to GeoServer, waiting for Tomcat to start GeoServer
+# and create the plugins directory first. If it doesn't exist within 120
+# seconds, then there is probably a problem and the chef client should
+# stop.
+bash "extract GeoServer GDAL plugin" do
+  cwd node["geoserver"]["prefix"]
+  code <<-EOH
+    while ! test -d "#{tomcat_home}/webapps/geoserver/WEB-INF/lib"; do
+      sleep 10
+      echo "Waiting for GeoServer lib directory to be created"
+    done
+    rm -rf geoserver-gdal-plugin
+    unzip "#{Chef::Config["file_cache_path"]}/#{geoserver_gdal_filename}" -d geoserver-gdal-plugin
+    cp geoserver-gdal-plugin/*.jar "#{tomcat_home}/webapps/geoserver/WEB-INF/lib/."
+    cp "#{gdal_src_dir}/swig/java/gdal.jar" "#{tomcat_home}/webapps/geoserver/WEB-INF/lib/."
+    chown -R #{node["tomcat"]["user"]} #{tomcat_home}/webapps/geoserver/WEB-INF/lib
+  EOH
+  timeout 120
+  not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-gdal-#{node["geoserver"]["version"]}.jar") }
+end
 
 # Auto-configure GeoServer
 

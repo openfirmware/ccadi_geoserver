@@ -55,3 +55,9 @@ default["gdal"]["download_url"] = "https://github.com/OSGeo/gdal/releases/downlo
 default["gdal"]["checksum_url"] = "https://github.com/OSGeo/gdal/releases/download/v3.3.2/gdal-3.3.2.tar.gz.md5"
 default["gdal"]["checksum_type"] = "MD5"
 default["gdal"]["prefix"] = "/opt/local"
+
+# GeoServer
+default["geoserver"]["version"] = "2.19.2"
+default["geoserver"]["prefix"] = "/opt/geoserver"
+default["geoserver"]["download_url"] = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/geoserver-2.19.2-war.zip"
+default["geoserver"]["gdal_plugin"]["download_url"] = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-gdal-plugin.zip"
