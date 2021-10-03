@@ -122,3 +122,11 @@ end
 describe file("/opt/tomcat/apache-tomcat-9.0.53/webapps/geoserver/WEB-INF/lib/gs-gdal-2.19.2.jar") do
   it { should exist }
 end
+
+describe file("/opt/tomcat/apache-tomcat-9.0.53/webapps/geoserver/WEB-INF/lib/gs-monitor-core-2.19.2.jar") do
+  it { should exist }
+end
+
+describe file("/opt/tomcat/apache-tomcat-9.0.53/webapps/geoserver/WEB-INF/lib/gs-netcdf-2.19.2.jar") do
+  it { should exist }
+end

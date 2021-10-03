@@ -430,7 +430,7 @@ bash "extract GeoServer" do
     unzip -o "#{Chef::Config["file_cache_path"]}/#{geoserver_filename}" -d .
   EOH
   not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver.war") }
-  notifies :restart, 'service[tomcat]'
+  notifies :restart, "service[tomcat]"
 end
 
 ###############################
@@ -455,12 +455,13 @@ bash "extract GeoServer GDAL plugin" do
       echo "Waiting for GeoServer lib directory to be created"
     done
     rm -rf geoserver-gdal-plugin
-    unzip "#{Chef::Config["file_cache_path"]}/#{geoserver_gdal_filename}" -d geoserver-gdal-plugin
+    unzip -o "#{Chef::Config["file_cache_path"]}/#{geoserver_gdal_filename}" -d geoserver-gdal-plugin
     cp geoserver-gdal-plugin/*.jar "#{tomcat_home}/webapps/geoserver/WEB-INF/lib/."
     cp "#{gdal_src_dir}/swig/java/gdal.jar" "#{tomcat_home}/webapps/geoserver/WEB-INF/lib/."
     chown -R #{node["tomcat"]["user"]} #{tomcat_home}/webapps/geoserver/WEB-INF/lib
   EOH
   timeout 120
+  notifies :restart, "service[tomcat]"
   not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-gdal-#{node["geoserver"]["version"]}.jar") }
 end
 
@@ -486,12 +487,44 @@ bash "extract GeoServer Monitoring plugin" do
       echo "Waiting for GeoServer lib directory to be created"
     done
     rm -rf geoserver-gdal-plugin
-    unzip "#{Chef::Config["file_cache_path"]}/#{geoserver_monitoring_filename}" -d geoserver-monitor-plugin
+    unzip -o "#{Chef::Config["file_cache_path"]}/#{geoserver_monitoring_filename}" -d geoserver-monitor-plugin
     cp geoserver-monitor-plugin/*.jar "#{tomcat_home}/webapps/geoserver/WEB-INF/lib/."
     chown -R #{node["tomcat"]["user"]} "#{tomcat_home}/webapps/geoserver/WEB-INF/lib"
   EOH
   timeout 120
-  not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-monitor-#{node["geoserver"]["version"]}.jar") }
+  notifies :restart, "service[tomcat]"
+  not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-monitor-core-#{node["geoserver"]["version"]}.jar") }
+end
+
+#################################
+# Install GeoServer NetCDF Plugin
+#################################
+
+geoserver_netcdf_filename = filename_from_url(node["geoserver"]["netcdf_plugin"]["download_url"])
+
+remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_netcdf_filename}" do
+  source node["geoserver"]["netcdf_plugin"]["download_url"]
+end
+
+# Extract NetCDF plugin to GeoServer, waiting for Tomcat to start GeoServer
+# and create the plugins directory first. If it doesn't exist within 120
+# seconds, then there is probably a problem and the chef client should
+# stop.
+bash "extract GeoServer NetCDF plugin" do
+  cwd node["geoserver"]["prefix"]
+  code <<-EOH
+    while ! test -d "#{tomcat_home}/webapps/geoserver/WEB-INF/lib"; do
+      sleep 10
+      echo "Waiting for GeoServer lib directory to be created"
+    done
+    rm -rf geoserver-gdal-plugin
+    unzip -o "#{Chef::Config["file_cache_path"]}/#{geoserver_netcdf_filename}" -d geoserver-netcdf-plugin
+    cp geoserver-netcdf-plugin/*.jar "#{tomcat_home}/webapps/geoserver/WEB-INF/lib/."
+    chown -R #{node["tomcat"]["user"]} "#{tomcat_home}/webapps/geoserver/WEB-INF/lib"
+  EOH
+  timeout 120
+  notifies :restart, "service[tomcat]"
+  not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-netcdf-#{node["geoserver"]["version"]}.jar") }
 end
 
 
