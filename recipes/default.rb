@@ -579,13 +579,13 @@ end
 # data directory. Using Chef resource notifications to stop Tomcat before
 # this runs does not seem to work, and will leave a partial data directory
 # behind. Instead Tomcat is stopped by systemd in the resource.
-bash "move geoserver data directory" do
+bash "copy base geoserver data directory" do
   code <<-EOH
     systemctl stop tomcat
     delay 5
-    mv "#{tomcat_home}/webapps/geoserver/data" "#{node["geoserver"]["prefix"]}"
+    rsync -a "#{tomcat_home}/webapps/geoserver/data/" "#{node["geoserver"]["prefix"]}"
   EOH
-  not_if { ::Dir.exist?("#{node["geoserver"]["prefix"]}/data") }
+  not_if { ::File.exist?("#{node["geoserver"]["prefix"]}/data/global.xml") }
   notifies :restart, "service[tomcat]"
 end
 
