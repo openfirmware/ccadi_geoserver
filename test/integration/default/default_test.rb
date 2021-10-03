@@ -72,7 +72,7 @@ describe file('/etc/nginx/conf.d/geoserver-https.conf') do
 end
 
 ##########################
-# Install GDAL and friends
+# Install GDAL and support
 ##########################
 
 describe directory("/opt/src") do
@@ -82,4 +82,43 @@ end
 describe file("/opt/local/bin/sqlite3") do
   it {should exist }
   it {should be_executable }
+end
+
+describe file("/opt/local/bin/proj") do
+  it {should exist }
+  it {should be_executable }
+end
+
+describe file("/opt/local/share/proj/proj.db") do
+  it {should exist }
+end
+
+describe file("/opt/java/apache-ant-1.10.11/bin/ant") do
+  it {should exist }
+  it {should be_executable }
+end
+
+describe file("/opt/local/bin/gdalinfo") do
+  it {should exist }
+  it {should be_executable }
+end
+
+###################
+# Install GeoServer
+###################
+
+describe directory("/opt/geoserver") do
+  it { should exist }
+end
+
+describe file("/opt/tomcat/apache-tomcat-9.0.53/webapps/geoserver.war") do
+  it { should exist }
+end
+
+describe directory("/opt/tomcat/apache-tomcat-9.0.53/webapps/geoserver") do
+  it { should exist }
+end
+
+describe file("/opt/tomcat/apache-tomcat-9.0.53/webapps/geoserver/WEB-INF/lib/gs-gdal-2.19.2.jar") do
+  it { should exist }
 end

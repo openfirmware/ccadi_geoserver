@@ -7,15 +7,16 @@ Installs:
 * [OpenJDK 17][]
 * [Nginx][nginx]
 * [Apache Tomcat 9][tomcat]
-	* Apache [Tomcat native][tomcat-native] plugins
+    * Apache [Tomcat native][tomcat-native] plugins
 * [GDAL 3][gdal]
-	* PROJ 8.1.1
-	* PROJ data files (approx 600 MB)
-	* SQLite 3.36.0
+    * PROJ 8.1.1
+    * PROJ data files (approx 600 MB)
+    * SQLite 3.36.0
 * [GeoServer 2.19][geoserver]
-	* "GDAL" extension
-	* "[Importer][importer]" extension
-	* "[Monitoring][monitoring]" extension
+    * "GDAL" extension
+    * "[Importer][importer]" extension
+    * "[Monitoring][monitoring]" extension
+    * "[NetCDF Source][netcdf-src]" extension
 * [certbot][] for HTTPS certificates
 
 A *temporary* production domain will be configured under the GeoSensorWeb Lab domain at https://geoserver.ccadi.gswlab.ca/. Expect this domain to change in the future to a more permanent home with CCADI.
@@ -28,6 +29,7 @@ Any automated configuration of GeoServer is described in the "GeoServer Autoconf
 [geoserver]:     http://geoserver.org/
 [importer]:      https://docs.geoserver.org/maintain/en/user/extensions/importer/index.html
 [monitoring]:    https://docs.geoserver.org/maintain/en/user/extensions/monitoring/index.html
+[netcdf-src]:    https://docs.geoserver.org/maintain/en/user/extensions/netcdf/netcdf.html
 [nginx]:         https://nginx.org/en/
 [OpenJDK 17]:    https://jdk.java.net/17/
 [tomcat]:        https://tomcat.apache.org/
