@@ -134,3 +134,7 @@ end
 describe file("/opt/tomcat/apache-tomcat-9.0.53/lib/libtcnative-1.so") do
   it { should exist }
 end
+
+describe file("opt/geoserver/data/global.xml") do
+  it {should exist }
+end

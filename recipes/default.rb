@@ -108,6 +108,8 @@ bash "extract Tomcat" do
   not_if { ::File.exists?(tomcat_home) }
 end
 
+geoserver_data = node["geoserver"]["data_dir"]
+
 systemd_unit "tomcat.service" do
   content <<-EOU.gsub(/^\s+/, '')
   [Unit]
@@ -122,6 +124,7 @@ systemd_unit "tomcat.service" do
   Environment="CATALINA_HOME=#{tomcat_home}"
   Environment="CATALINA_BASE=#{tomcat_home}"
   Environment="CATALINA_OPTS="
+  Environment="GEOSERVER_DATA_DIR=#{geoserver_data}"
   Environment="GDAL_DATA=#{node["gdal"]["prefix"]}/share/gdal"
   Environment="LD_LIBRARY_PATH=$LD_LIBRARY_PATH:#{tomcat_home}/lib"
   Environment="JAVA_OPTS=-Dfile.encoding=UTF-8 -Djava.library.path=/usr/local/lib:/opt/local/lib:#{tomcat_home}/lib -Xms#{node["tomcat"]["Xms"]} -Xmx#{node["tomcat"]["Xmx"]}"
@@ -408,8 +411,6 @@ end
 ###################
 # Install GeoServer
 ###################
-geoserver_data = "#{tomcat_home}/webapps/geoserver/data"
-
 directory node["geoserver"]["prefix"] do
   recursive true
   action :create
@@ -567,7 +568,26 @@ bash "compile tomcat-native" do
   notifies :restart, "service[tomcat]"
 end
 
-package %w(libtiff-tools)
+#####################
+# Customize GeoServer
+#####################
+# Move the default GeoServer data directory out of the Tomcat webapps
+# directory. This allows it to be on another volume and persist between
+# Tomcat upgrades.
+
+# If the "new" data directory is still empty, then move over the original
+# data directory. Using Chef resource notifications to stop Tomcat before
+# this runs does not seem to work, and will leave a partial data directory
+# behind. Instead Tomcat is stopped by systemd in the resource.
+bash "move geoserver data directory" do
+  code <<-EOH
+    systemctl stop tomcat
+    delay 5
+    mv "#{tomcat_home}/webapps/geoserver/data" "#{node["geoserver"]["prefix"]}"
+  EOH
+  not_if { ::Dir.exist?("#{node["geoserver"]["prefix"]}/data") }
+  notifies :restart, "service[tomcat]"
+end
 
 # Install extra CRS definitions
 cookbook_file "#{geoserver_data}/user_projections/epsg.properties" do
@@ -576,8 +596,3 @@ cookbook_file "#{geoserver_data}/user_projections/epsg.properties" do
   group node["tomcat"]["user"]
   notifies :restart, "service[tomcat]"
 end
-
-#####################
-# Customize GeoServer
-#####################
-# TODO
