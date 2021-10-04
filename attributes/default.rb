@@ -86,6 +86,7 @@ default["geoserver"]["contact"]["position"]     = "Research Associate"
 default["geoserver"]["num_decimals"]       = 8
 default["geoserver"]["verbose"]            = false
 default["geoserver"]["verbose_exceptions"] = false
+default["geoserver"]["proxy_base_url"]     = "https://geoserver.ccadi.gswlab.ca/geoserver"
 
 default["geoserver"]["jai"]["allow_interpolation"] = false
 default["geoserver"]["jai"]["recycling"]           = false

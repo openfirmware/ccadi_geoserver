@@ -592,6 +592,7 @@ template "install geoserver global configuration" do
     address:            node["geoserver"]["address"],
     contact:            node["geoserver"]["contact"],
     num_decimals:       node["geoserver"]["num_decimals"],
+    proxy_base_url:     node["geoserver"]["proxy_base_url"],
     verbose:            node["geoserver"]["verbose"],
     verbose_exceptions: node["geoserver"]["verbose_exceptions"],
     jai:                node["geoserver"]["jai"]
