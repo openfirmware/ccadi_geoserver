@@ -49,6 +49,24 @@ GDAL is installed to provide extra functionality to GeoServer using the GDAL plu
 
 TODO: Include bootstrap instructions, as well as Chef Server instructions
 
+Pushing to Chef Server, assuming Chef configuration (`~/.chef`) has been set:
+
+```
+$ chef push (basename $PWD) Policyfile.rb
+```
+
+And to bootstrap a new node with this cookbook/policy:
+
+```
+$ knife bootstrap geoserver.ccadi.gswlab.ca \
+    --node-name geoserver \
+    --connection-user centos \
+    --sudo \
+    -i ~/.ssh/id_rsa \
+    --policy-group ccadi_geoserver \
+    --policy-name ccadi_geoserver \
+```
+
 ### Cookbook Attributes
 
 TODO: List the attributes that can be customized to override various settings.
