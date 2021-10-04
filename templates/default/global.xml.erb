@@ -1,0 +1,44 @@
+<global>
+  <settings>
+    <id>SettingsInfoImpl-68f6c583:154ca420c47:-8000</id>
+    <contact>
+      <addressCity><%= @address[:city] %></addressCity>
+      <addressCountry><%= @address[:country] %></addressCountry>
+      <addressType><%= @address[:type] %></addressType>
+      <contactEmail><%= @contact[:email] %></contactEmail>
+      <contactOrganization><%= @contact[:organization] %></contactOrganization>
+      <contactPerson><%= @contact[:person] %></contactPerson>
+      <contactPosition><%= @contact[:position] %></contactPosition>
+    </contact>
+    <charset>UTF-8</charset>
+    <numDecimals><%= @num_decimals %></numDecimals>
+    <onlineResource>http://geoserver.org</onlineResource>
+    <verbose><%= @verbose %></verbose>
+    <verboseExceptions><%= @verbose_exceptions %></verboseExceptions>
+    <localWorkspaceIncludesPrefix>false</localWorkspaceIncludesPrefix>
+  </settings>
+  <jai>
+    <allowInterpolation><%= @jai[:allow_interpolation] %></allowInterpolation>
+    <recycling><%= @jai[:recycling] %></recycling>
+    <tilePriority><%= @jai[:tile_priority] %></tilePriority>
+    <tileThreads><%= @jai[:tile_threads] %></tileThreads>
+    <memoryCapacity><%= @jai[:memory_capacity] %></memoryCapacity>
+    <memoryThreshold><%= @jai[:memory_threshold] %></memoryThreshold>
+    <imageIOCache><%= @jai[:image_io_cache] %></imageIOCache>
+    <pngAcceleration><%= @jai[:png_acceleration] %></pngAcceleration>
+    <jpegAcceleration><%= @jai[:jpeg_acceleration] %></jpegAcceleration>
+    <allowNativeMosaic><%= @jai[:allow_native_mosaic] %></allowNativeMosaic>
+    <allowNativeWarp><%= @jai[:allow_native_warp] %></allowNativeWarp>
+  </jai>
+  <coverageAccess>
+    <maxPoolSize>10</maxPoolSize>
+    <corePoolSize>5</corePoolSize>
+    <keepAliveTime>30000</keepAliveTime>
+    <queueType>UNBOUNDED</queueType>
+    <imageIOCacheThreshold>10240</imageIOCacheThreshold>
+  </coverageAccess>
+  <updateSequence>152</updateSequence>
+  <featureTypeCacheSize>0</featureTypeCacheSize>
+  <globalServices>true</globalServices>
+  <xmlPostRequestLogBufferSize>1024</xmlPostRequestLogBufferSize>
+</global>

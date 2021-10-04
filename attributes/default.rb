@@ -71,3 +71,30 @@ default["geoserver"]["data_dir"]                          = "/opt/geoserver/data
 default["geoserver"]["gdal_plugin"]["download_url"]       = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-gdal-plugin.zip"
 default["geoserver"]["monitoring_plugin"]["download_url"] = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-monitor-plugin.zip"
 default["geoserver"]["netcdf_plugin"]["download_url"]     = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-netcdf-plugin.zip"
+
+# GeoServer global configuration
+# This values are only set on the first installation and will NOT overwrite
+# values updated later through the web UI.
+default["geoserver"]["address"]["city"]         = "Calgary"
+default["geoserver"]["address"]["country"]      = "Canada"
+default["geoserver"]["address"]["type"]         = "Work"
+default["geoserver"]["contact"]["organization"] = "GeoSensor Web Lab, Geomatics Engineering, University of Calgary"
+default["geoserver"]["contact"]["person"]       = "James Badger"
+default["geoserver"]["contact"]["email"]        = "jpbadger@ucalgary.ca"
+default["geoserver"]["contact"]["position"]     = "Research Associate"
+
+default["geoserver"]["num_decimals"]       = 8
+default["geoserver"]["verbose"]            = false
+default["geoserver"]["verbose_exceptions"] = false
+
+default["geoserver"]["jai"]["allow_interpolation"] = false
+default["geoserver"]["jai"]["recycling"]           = false
+default["geoserver"]["jai"]["tile_priority"]       = 5
+default["geoserver"]["jai"]["tile_threads"]        = 7
+default["geoserver"]["jai"]["memory_capacity"]     = 0.5
+default["geoserver"]["jai"]["memory_threshold"]    = 0.75
+default["geoserver"]["jai"]["image_io_cache"]      = false
+default["geoserver"]["jai"]["png_acceleration"]    = true
+default["geoserver"]["jai"]["jpeg_acceleration"]   = true
+default["geoserver"]["jai"]["allow_native_mosaic"] = false
+default["geoserver"]["jai"]["allow_native_warp"]   = false

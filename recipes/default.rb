@@ -19,6 +19,9 @@ src_path = node["ccadi_geoserver"]["source_path"]
 # Enable EPEL repository
 yum_package "epel-release"
 
+# Install vim for debugging
+yum_package "vim"
+
 # Update packages
 execute "yum update" do
   command "yum update --assumeyes"
@@ -582,11 +585,12 @@ end
 bash "copy base geoserver data directory" do
   code <<-EOH
     systemctl stop tomcat
-    delay 5
-    rsync -a "#{tomcat_home}/webapps/geoserver/data/" "#{node["geoserver"]["prefix"]}"
+    sleep 5
+    rsync -a "#{tomcat_home}/webapps/geoserver/data" "#{node["geoserver"]["prefix"]}"
   EOH
-  not_if { ::File.exist?("#{node["geoserver"]["prefix"]}/data/global.xml") }
+  not_if { ::File.exist?("#{geoserver_data}/global.xml") }
   notifies :restart, "service[tomcat]"
+  notifies :create, "template[install geoserver global configuration]"
 end
 
 # Install extra CRS definitions
@@ -595,4 +599,23 @@ cookbook_file "#{geoserver_data}/user_projections/epsg.properties" do
   owner node["tomcat"]["user"]
   group node["tomcat"]["user"]
   notifies :restart, "service[tomcat]"
+end
+
+# Install new global configuration.
+# The action is set to "nothing" as this should *only* be triggered after
+# a fresh installation, otherwise changes made using the GeoServer web UI
+# will be overwritten.
+template "install geoserver global configuration" do
+  path "#{geoserver_data}/global.xml"
+  source "global.xml.erb"
+  variables({
+    address:            node["geoserver"]["address"],
+    contact:            node["geoserver"]["contact"],
+    num_decimals:       node["geoserver"]["num_decimals"],
+    verbose:            node["geoserver"]["verbose"],
+    verbose_exceptions: node["geoserver"]["verbose_exceptions"],
+    jai:                node["geoserver"]["jai"]
+
+  })
+  action :nothing
 end
