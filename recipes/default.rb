@@ -591,6 +591,7 @@ bash "copy base geoserver data directory" do
   not_if { ::File.exist?("#{geoserver_data}/global.xml") }
   notifies :restart, "service[tomcat]"
   notifies :create, "template[install geoserver global configuration]"
+  notifies :create, "template[install default CSW configuration]"
 end
 
 # Install extra CRS definitions
@@ -617,5 +618,14 @@ template "install geoserver global configuration" do
     jai:                node["geoserver"]["jai"]
 
   })
+  notifies :restart, "service[tomcat]"
+  action :nothing
+end
+
+# Install default CSW configuration, only on first run.
+cookbook_file "install default CSW configuration" do
+  path "#{geoserver_data}/csw.xml"
+  source "csw.xml"
+  notifies :restart, "service[tomcat]"
   action :nothing
 end
