@@ -213,6 +213,11 @@ template "/etc/nginx/conf.d/geoserver-https.conf" do
   notifies :reload, "service[nginx]"
 end
 
+# Enable SELinux access from nginx to Tomcat
+execute "Allow httpd network connections" do
+  command "setsebool -P httpd_can_network_connect 1"
+end
+
 ##########################
 # Install GDAL and support
 ##########################
