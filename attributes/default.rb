@@ -98,3 +98,6 @@ default["geoserver"]["jai"]["png_acceleration"]    = true
 default["geoserver"]["jai"]["jpeg_acceleration"]   = true
 default["geoserver"]["jai"]["allow_native_mosaic"] = false
 default["geoserver"]["jai"]["allow_native_warp"]   = false
+
+# Replacement "master password" for GeoServer
+default["geoserver"]["masterpw"] = "digest1:IFus7DrdapMz6GBCP0A9rM8Xrrxu52z6vgib6sxwzW20SaoqHA8Y3H1MRch8zeOJ"

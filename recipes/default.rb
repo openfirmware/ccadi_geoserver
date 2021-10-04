@@ -626,6 +626,14 @@ cookbook_file "install default WMS configuration" do
   action :nothing
 end
 
+# Install new masterpw file
+file "install new masterpw file" do
+  path "#{geoserver_data}/security/masterpw.digest"
+  content node["geoserver"]["masterpw"]
+  notifies :restart, "service[tomcat]"
+  # action :nothing
+end
+
 # Move the default GeoServer data directory out of the Tomcat webapps
 # directory. This allows it to be on another volume and persist between
 # Tomcat upgrades.
@@ -647,6 +655,7 @@ bash "copy base geoserver data directory" do
   notifies :create, "cookbook_file[install default WCS configuration]"
   notifies :create, "cookbook_file[install default WFS configuration]"
   notifies :create, "cookbook_file[install default WMS configuration]"
+  notifies :create, "file[install new masterpw file]"
 end
 
 # Install extra CRS definitions
