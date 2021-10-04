@@ -631,7 +631,7 @@ file "install new masterpw file" do
   path "#{geoserver_data}/security/masterpw.digest"
   content node["geoserver"]["masterpw"]
   notifies :restart, "service[tomcat]"
-  # action :nothing
+  action :nothing
 end
 
 # Move the default GeoServer data directory out of the Tomcat webapps
