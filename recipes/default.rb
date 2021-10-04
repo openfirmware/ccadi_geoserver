@@ -574,34 +574,6 @@ end
 #####################
 # Customize GeoServer
 #####################
-# Move the default GeoServer data directory out of the Tomcat webapps
-# directory. This allows it to be on another volume and persist between
-# Tomcat upgrades.
-
-# If the "new" data directory is still empty, then move over the original
-# data directory. Using Chef resource notifications to stop Tomcat before
-# this runs does not seem to work, and will leave a partial data directory
-# behind. Instead Tomcat is stopped by systemd in the resource.
-bash "copy base geoserver data directory" do
-  code <<-EOH
-    systemctl stop tomcat
-    sleep 5
-    rsync -a "#{tomcat_home}/webapps/geoserver/data" "#{node["geoserver"]["prefix"]}"
-  EOH
-  not_if { ::File.exist?("#{geoserver_data}/global.xml") }
-  notifies :restart, "service[tomcat]"
-  notifies :create, "template[install geoserver global configuration]"
-  notifies :create, "template[install default CSW configuration]"
-end
-
-# Install extra CRS definitions
-cookbook_file "#{geoserver_data}/user_projections/epsg.properties" do
-  source "epsg.properties"
-  owner node["tomcat"]["user"]
-  group node["tomcat"]["user"]
-  notifies :restart, "service[tomcat]"
-end
-
 # Install new global configuration.
 # The action is set to "nothing" as this should *only* be triggered after
 # a fresh installation, otherwise changes made using the GeoServer web UI
@@ -628,4 +600,59 @@ cookbook_file "install default CSW configuration" do
   source "csw.xml"
   notifies :restart, "service[tomcat]"
   action :nothing
+end
+
+# Install default WCS configuration, only on first run.
+cookbook_file "install default WCS configuration" do
+  path "#{geoserver_data}/wcs.xml"
+  source "wcs.xml"
+  notifies :restart, "service[tomcat]"
+  action :nothing
+end
+
+# Install default WFS configuration, only on first run.
+cookbook_file "install default WFS configuration" do
+  path "#{geoserver_data}/wfs.xml"
+  source "wfs.xml"
+  notifies :restart, "service[tomcat]"
+  action :nothing
+end
+
+# Install default WMS configuration, only on first run.
+cookbook_file "install default WMS configuration" do
+  path "#{geoserver_data}/wms.xml"
+  source "wms.xml"
+  notifies :restart, "service[tomcat]"
+  action :nothing
+end
+
+# Move the default GeoServer data directory out of the Tomcat webapps
+# directory. This allows it to be on another volume and persist between
+# Tomcat upgrades.
+
+# If the "new" data directory is still empty, then move over the original
+# data directory. Using Chef resource notifications to stop Tomcat before
+# this runs does not seem to work, and will leave a partial data directory
+# behind. Instead Tomcat is stopped by systemd in the resource.
+bash "copy base geoserver data directory" do
+  code <<-EOH
+    systemctl stop tomcat
+    sleep 5
+    rsync -a "#{tomcat_home}/webapps/geoserver/data" "#{node["geoserver"]["prefix"]}"
+  EOH
+  not_if { ::File.exist?("#{geoserver_data}/global.xml") }
+  notifies :restart, "service[tomcat]"
+  notifies :create, "template[install geoserver global configuration]"
+  notifies :create, "cookbook_file[install default CSW configuration]"
+  notifies :create, "cookbook_file[install default WCS configuration]"
+  notifies :create, "cookbook_file[install default WFS configuration]"
+  notifies :create, "cookbook_file[install default WMS configuration]"
+end
+
+# Install extra CRS definitions
+cookbook_file "#{geoserver_data}/user_projections/epsg.properties" do
+  source "epsg.properties"
+  owner node["tomcat"]["user"]
+  group node["tomcat"]["user"]
+  notifies :restart, "service[tomcat]"
 end
