@@ -112,6 +112,7 @@ bash "extract Tomcat" do
 end
 
 geoserver_data = node["geoserver"]["data_dir"]
+domains        = node["ccadi_geoserver"]["domains"].join(",")
 
 systemd_unit "tomcat.service" do
   content <<-EOU.gsub(/^\s+/, '')
@@ -127,6 +128,7 @@ systemd_unit "tomcat.service" do
   Environment="CATALINA_HOME=#{tomcat_home}"
   Environment="CATALINA_BASE=#{tomcat_home}"
   Environment="CATALINA_OPTS="
+  Environment="GEOSERVER_CSRF_WHITELIST=#{domains}"
   Environment="GEOSERVER_DATA_DIR=#{geoserver_data}"
   Environment="GDAL_DATA=#{node["gdal"]["prefix"]}/share/gdal"
   Environment="LD_LIBRARY_PATH=$LD_LIBRARY_PATH:#{tomcat_home}/lib"
