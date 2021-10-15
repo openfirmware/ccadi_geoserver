@@ -23,15 +23,15 @@ default["tomcat"]["user"]          = "tomcat"
 default["tomcat"]["Xms"]           = "256m"
 default["tomcat"]["Xmx"]           = "4g"
 default["tomcat"]["prefix"]        = "/opt/tomcat"
-default["tomcat"]["download_url"]  = "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz"
-default["tomcat"]["checksum_url"]  = "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz.sha512"
+default["tomcat"]["download_url"]  = "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz"
+default["tomcat"]["checksum_url"]  = "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz.sha512"
 default["tomcat"]["checksum_type"] = "SHA512"
 
 # Apache Tomcat native plugin
 default["tomcat-native"]["version"]       = "1.2.31"
 default["tomcat-native"]["prefix"]        = "/opt/tomcat"
-default["tomcat-native"]["download_url"]  = "https://dlcdn.apache.org/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz"
-default["tomcat-native"]["checksum_url"]  = "https://dlcdn.apache.org/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz.sha512"
+default["tomcat-native"]["download_url"]  = "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz"
+default["tomcat-native"]["checksum_url"]  = "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz.sha512"
 default["tomcat-native"]["checksum_type"] = "SHA512"
 
 # Certbot
