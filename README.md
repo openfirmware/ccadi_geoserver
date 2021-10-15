@@ -47,15 +47,18 @@ GDAL is installed to provide extra functionality to GeoServer using the GDAL plu
 
 ## Using this cookbook to install GeoServer
 
-TODO: Include bootstrap instructions, as well as Chef Server instructions
+The primary method of deploying this cookbook is by using a central Chef Infra Server to maintain state and a versioned copies of cookbooks that are deployed to clients. Non-server deployments such as "Chef Zero" are not covered as I don't have experience using that.
 
-Pushing to Chef Server, assuming Chef configuration (`~/.chef`) has been set:
+Once a Chef Infra Server has been set up, a developer configures a certificate for accessing the Chef Server. Then a developer may push the latest cookbook to Chef Infra Server, assuming Chef configuration (`~/.chef`) has been set:
 
 ```
 $ chef push (basename $PWD) Policyfile.rb
 ```
 
-And to bootstrap a new node with this cookbook/policy:
+This will replace the server's copy of the cookbook, but only for the version specified in `metadata.rb`. This allows older cookbook versions to be used by stable installations.
+
+
+To bootstrap a new node with this cookbook/policy, and add that new node to Chef Infra Server:
 
 ```
 $ knife bootstrap geoserver.ccadi.gswlab.ca \
@@ -64,8 +67,20 @@ $ knife bootstrap geoserver.ccadi.gswlab.ca \
     --sudo \
     -i ~/.ssh/id_rsa \
     --policy-group ccadi_geoserver \
-    --policy-name ccadi_geoserver \
+    --policy-name ccadi_geoserver
 ```
+
+In this case, `geoserver.ccadi.gswlab.ca` is the SSH address of the node for connecting the bootstrap process.
+
+We give this node the name `geoserver` for Chef Server.
+
+The connection user of `centos` would be different for Ubuntu/Debian.
+
+`sudo` is used as we are not connecting as a root user.
+
+The SSH private key in `~/.ssh/id_rsa` is used to authenticate with this node without a password prompt; this key is usually set up through your cloud provider.
+
+The policy name and group specify the storage organization of this cookbook in Chef Server.
 
 ### Cookbook Attributes
 
