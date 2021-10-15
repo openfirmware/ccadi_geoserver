@@ -673,3 +673,13 @@ cookbook_file "#{geoserver_data}/user_projections/epsg.properties" do
   group node["tomcat"]["user"]
   notifies :restart, "service[tomcat]"
 end
+
+# Create directory for GeoWebCache blob store
+gwc_cache_dir = node["geoserver"]["data_dir"] + "/cache"
+
+directory gwc_cache_dir do
+  recursive true
+  owner node["tomcat"]["user"]
+  group node["tomcat"]["user"]
+  action :create
+end
