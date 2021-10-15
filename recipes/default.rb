@@ -529,7 +529,7 @@ bash "extract GeoServer NetCDF plugin" do
       sleep 10
       echo "Waiting for GeoServer lib directory to be created"
     done
-    rm -rf geoserver-gdal-plugin
+    rm -rf geoserver-netcdf-plugin
     unzip -o "#{Chef::Config["file_cache_path"]}/#{geoserver_netcdf_filename}" -d geoserver-netcdf-plugin
     cp geoserver-netcdf-plugin/*.jar "#{tomcat_home}/webapps/geoserver/WEB-INF/lib/."
     chown -R #{node["tomcat"]["user"]} "#{tomcat_home}/webapps/geoserver/WEB-INF/lib"
@@ -537,6 +537,36 @@ bash "extract GeoServer NetCDF plugin" do
   timeout 120
   notifies :restart, "service[tomcat]"
   not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-netcdf-#{node["geoserver"]["version"]}.jar") }
+end
+
+##############################
+# Install GeoServer WPS Plugin
+##############################
+geoserver_wps_filename = filename_from_url(node["geoserver"]["wps_plugin"]["download_url"])
+
+remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_wps_filename}" do
+  source node["geoserver"]["wps_plugin"]["download_url"]
+end
+
+# Extract WPS plugin to GeoServer, waiting for Tomcat to start GeoServer
+# and create the plugins directory first. If it doesn't exist within 120
+# seconds, then there is probably a problem and the chef client should
+# stop.
+bash "extract GeoServer WPS plugin" do
+  cwd node["geoserver"]["prefix"]
+  code <<-EOH
+    while ! test -d "#{tomcat_home}/webapps/geoserver/WEB-INF/lib"; do
+      sleep 10
+      echo "Waiting for GeoServer lib directory to be created"
+    done
+    rm -rf geoserver-wps-plugin
+    unzip -o "#{Chef::Config["file_cache_path"]}/#{geoserver_wps_filename}" -d geoserver-wps-plugin
+    cp geoserver-wps-plugin/*.jar "#{tomcat_home}/webapps/geoserver/WEB-INF/lib/."
+    chown -R #{node["tomcat"]["user"]} "#{tomcat_home}/webapps/geoserver/WEB-INF/lib"
+  EOH
+  timeout 120
+  notifies :restart, "service[tomcat]"
+  not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-wps-#{node["geoserver"]["version"]}.jar") }
 end
 
 ######################
@@ -634,6 +664,14 @@ cookbook_file "install default WMS configuration" do
   action :nothing
 end
 
+# Install default WPS configuration, only on first run.
+cookbook_file "install default WPS configuration" do
+  path "#{geoserver_data}/wps.xml"
+  source "wps.xml"
+  notifies :restart, "service[tomcat]"
+  action :nothing
+end
+
 # Install new masterpw file
 file "install new masterpw file" do
   path "#{geoserver_data}/security/masterpw.digest"
@@ -663,6 +701,7 @@ bash "copy base geoserver data directory" do
   notifies :create, "cookbook_file[install default WCS configuration]"
   notifies :create, "cookbook_file[install default WFS configuration]"
   notifies :create, "cookbook_file[install default WMS configuration]"
+  notifies :create, "cookbook_file[install default WPS configuration]"
   notifies :create, "file[install new masterpw file]"
 end
 

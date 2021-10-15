@@ -16,7 +16,8 @@ Installs:
     * "GDAL" extension
     * "[Importer][importer]" extension
     * "[Monitoring][monitoring]" extension
-    * "[NetCDF Source][netcdf-src]" extension
+    * "[NetCDF Source][netcdf]" extension
+    * "[WPS][]" extension
 * [certbot][] for HTTPS certificates
 
 A *temporary* production domain will be configured under the GeoSensorWeb Lab domain at https://geoserver.ccadi.gswlab.ca/. Expect this domain to change in the future to a more permanent home with CCADI.
@@ -27,13 +28,14 @@ Any automated configuration of GeoServer is described in the "GeoServer Autoconf
 [certbot]:       https://certbot.eff.org/
 [gdal]:          https://gdal.org/
 [geoserver]:     http://geoserver.org/
-[importer]:      https://docs.geoserver.org/maintain/en/user/extensions/importer/index.html
-[monitoring]:    https://docs.geoserver.org/maintain/en/user/extensions/monitoring/index.html
-[netcdf-src]:    https://docs.geoserver.org/maintain/en/user/extensions/netcdf/netcdf.html
+[importer]:      https://docs.geoserver.org/2.19.x/en/user/extensions/importer/index.html
+[monitoring]:    https://docs.geoserver.org/2.19.x/en/user/extensions/monitoring/index.html
+[netcdf]:        https://docs.geoserver.org/2.19.x/en/user/extensions/netcdf/netcdf.html
 [nginx]:         https://nginx.org/en/
 [OpenJDK 17]:    https://jdk.java.net/17/
 [tomcat]:        https://tomcat.apache.org/
 [tomcat-native]: https://tomcat.apache.org/native-doc/
+[wps]:           https://docs.geoserver.org/2.19.x/en/user/services/wps/index.html
 
 ## Service Components and Architecture
 
