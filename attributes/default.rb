@@ -14,8 +14,7 @@ default["jobs"] = 4
 default["openjdk"]["version"]       = "17"
 default["openjdk"]["prefix"]        = "/opt/java"
 default["openjdk"]["download_url"]  = "https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz"
-default["openjdk"]["checksum_url"]  = "https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz.sha256"
-default["openjdk"]["checksum_type"] = "SHA256"
+default["openjdk"]["checksum"]      = "aef49cc7aa606de2044302e757fa94c8e144818e93487081c4fd319ca858134b"
 
 # Apache Tomcat
 default["tomcat"]["version"]       = "9.0.53"
@@ -24,15 +23,15 @@ default["tomcat"]["Xms"]           = "256m"
 default["tomcat"]["Xmx"]           = "4g"
 default["tomcat"]["prefix"]        = "/opt/tomcat"
 default["tomcat"]["download_url"]  = "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz"
-default["tomcat"]["checksum_url"]  = "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz.sha512"
-default["tomcat"]["checksum_type"] = "SHA512"
+# Manually calculated SHA256:
+default["tomcat"]["checksum"]      = "7b3e456ed76b0b42d99767985dc3774b22e2388834994f8539272eb7c05ab6fd"
 
 # Apache Tomcat native plugin
-default["tomcat-native"]["version"]       = "1.2.31"
-default["tomcat-native"]["prefix"]        = "/opt/tomcat"
-default["tomcat-native"]["download_url"]  = "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz"
-default["tomcat-native"]["checksum_url"]  = "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz.sha512"
-default["tomcat-native"]["checksum_type"] = "SHA512"
+default["tomcat-native"]["version"]      = "1.2.31"
+default["tomcat-native"]["prefix"]       = "/opt/tomcat"
+default["tomcat-native"]["download_url"] = "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz"
+# Manually calculated SHA256:
+default["tomcat-native"]["checksum"]     = "acc0e6e342fbdda54b029564405322823c93d83f9d64363737c1cbcc3af1c1fd"
 
 # Certbot
 default["certbot"]["enabled"]        = true
@@ -41,33 +40,38 @@ default["certbot"]["challenge_path"] = "/usr/share/nginx/html/.well-known/acme-c
 
 # SQLite
 default["sqlite"]["download_url"] = "https://sqlite.org/2021/sqlite-autoconf-3360000.tar.gz"
+# Manually calculated SHA256:
+default["sqlite"]["checksum"]     = "bd90c3eb96bee996206b83be7065c9ce19aef38c3f4fb53073ada0d0b69bbce3"
 default["sqlite"]["prefix"]       = "/opt/local"
 
 # PROJ
 default["proj"]["download_url"]  = "https://download.osgeo.org/proj/proj-8.1.1.tar.gz"
-default["proj"]["checksum_url"]  = "https://download.osgeo.org/proj/proj-8.1.1.tar.gz.md5"
-default["proj"]["checksum_type"] = "MD5"
+# Manually calculated SHA256:
+default["proj"]["checksum"]      = "82f1345e5fa530c407cb1fc0752e83f8d08d2b98772941bbdc7820241f7fada2"
 default["proj"]["prefix"]        = "/opt/local"
 
 # Ant
 default["ant"]["version"]       = "1.10.11"
 default["ant"]["prefix"]        = "/opt/java"
 default["ant"]["download_url"]  = "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.11-bin.tar.gz"
-default["ant"]["checksum_url"]  = "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.11-bin.tar.gz.sha512"
-default["ant"]["checksum_type"] = "SHA512"
+# Manually calculated SHA256:
+default["ant"]["checksum"]      = "0a3dc4624c863657daa609051763f12bfd286bc6da1d61ca48959ce3b94be0e7"
 
 # GDAL
 default["gdal"]["version"]       = "3.3.2"
 default["gdal"]["download_url"]  = "https://github.com/OSGeo/gdal/releases/download/v3.3.2/gdal-3.3.2.tar.gz"
-default["gdal"]["checksum_url"]  = "https://github.com/OSGeo/gdal/releases/download/v3.3.2/gdal-3.3.2.tar.gz.md5"
-default["gdal"]["checksum_type"] = "MD5"
+# Manually calculated SHA256:
+default["gdal"]["checksum"]      = "f2097ea6e3ccc07c0b3663b86393b7affde3db92ca92508ab972a029b865a96c"
 default["gdal"]["prefix"]        = "/opt/local"
 
 # GeoServer
+# Checksums are manually calculated SHA256.
 default["geoserver"]["version"]                           = "2.19.2"
 default["geoserver"]["prefix"]                            = "/opt/geoserver"
 default["geoserver"]["download_url"]                      = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/geoserver-2.19.2-war.zip"
+default["geoserver"]["checksum"]                          = "d84c75a55e77cc40a198470014d14983fbcb204dec253d7482b81f1c701f9f3f"
 default["geoserver"]["data_dir"]                          = "/opt/geoserver/data"
+default["geoserver"]["csw_plugin"]["download_url"]        = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-csw-plugin.zip"
 default["geoserver"]["gdal_plugin"]["download_url"]       = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-gdal-plugin.zip"
 default["geoserver"]["monitoring_plugin"]["download_url"] = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-monitor-plugin.zip"
 default["geoserver"]["netcdf_plugin"]["download_url"]     = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-netcdf-plugin.zip"

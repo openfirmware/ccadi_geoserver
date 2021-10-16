@@ -64,7 +64,8 @@ end
 jdk_filename = filename_from_url(node["openjdk"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{jdk_filename}" do
-  source node["openjdk"]["download_url"]
+  source   node["openjdk"]["download_url"]
+  checksum node["openjdk"]["checksum"]
 end
 
 bash "extract JDK" do
@@ -99,7 +100,8 @@ end
 tomcat_filename = filename_from_url(node["tomcat"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{tomcat_filename}" do
-  source node["tomcat"]["download_url"]
+  source   node["tomcat"]["download_url"]
+  checksum node["tomcat"]["checksum"]
 end
 
 bash "extract Tomcat" do
@@ -245,7 +247,8 @@ end
 sqlite_filename = filename_from_url(node["sqlite"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{sqlite_filename}" do
-  source node["sqlite"]["download_url"]
+  source   node["sqlite"]["download_url"]
+  checksum node["sqlite"]["checksum"]
 end
 
 sqlite_src_dir = "#{src_path}/sqlite-autoconf-3360000"
@@ -295,7 +298,8 @@ end
 proj_filename = filename_from_url(node["proj"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{proj_filename}" do
-  source node["proj"]["download_url"]
+  source   node["proj"]["download_url"]
+  checksum node["proj"]["checksum"]
 end
 
 proj_src_dir = "#{src_path}/proj-8.1.1"
@@ -347,7 +351,8 @@ directory node["ant"]["prefix"] do
 end
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{ant_filename}" do
-  source node["ant"]["download_url"]
+  source   node["ant"]["download_url"]
+  checksum node["ant"]["checksum"]
 end
 
 # This is a binary, so we can extract directly to the prefix
@@ -379,7 +384,8 @@ end
 gdal_filename = filename_from_url(node["gdal"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{gdal_filename}" do
-  source node["gdal"]["download_url"]
+  source   node["gdal"]["download_url"]
+  checksum node["gdal"]["checksum"]
 end
 
 gdal_src_dir = "#{src_path}/gdal-#{node["gdal"]["version"]}"
@@ -429,7 +435,8 @@ end
 geoserver_filename = filename_from_url(node["geoserver"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_filename}" do
-  source node["geoserver"]["download_url"]
+  source   node["geoserver"]["download_url"]
+  checksum node["geoserver"]["checksum"]
 end
 
 yum_package "unzip"
