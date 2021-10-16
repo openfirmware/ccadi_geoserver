@@ -458,7 +458,8 @@ end
 geoserver_gdal_filename = filename_from_url(node["geoserver"]["gdal_plugin"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_gdal_filename}" do
-  source node["geoserver"]["gdal_plugin"]["download_url"]
+  source   node["geoserver"]["gdal_plugin"]["download_url"]
+  checksum node["geoserver"]["gdal_plugin"]["checksum"]
 end
 
 # Extract GDAL plugin to GeoServer, waiting for Tomcat to start GeoServer
@@ -490,7 +491,8 @@ end
 geoserver_monitoring_filename = filename_from_url(node["geoserver"]["monitoring_plugin"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_monitoring_filename}" do
-  source node["geoserver"]["monitoring_plugin"]["download_url"]
+  source   node["geoserver"]["monitoring_plugin"]["download_url"]
+  checksum node["geoserver"]["monitoring_plugin"]["checksum"]
 end
 
 # Extract Monitoring plugin to GeoServer, waiting for Tomcat to start GeoServer
@@ -522,7 +524,8 @@ yum_package %w[netcdf netcdf-devel netcdf-cxx netcdf-cxx-devel]
 geoserver_netcdf_filename = filename_from_url(node["geoserver"]["netcdf_plugin"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_netcdf_filename}" do
-  source node["geoserver"]["netcdf_plugin"]["download_url"]
+  source   node["geoserver"]["netcdf_plugin"]["download_url"]
+  checksum node["geoserver"]["netcdf_plugin"]["checksum"]
 end
 
 # Extract NetCDF plugin to GeoServer, waiting for Tomcat to start GeoServer
@@ -552,7 +555,8 @@ end
 geoserver_wps_filename = filename_from_url(node["geoserver"]["wps_plugin"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_wps_filename}" do
-  source node["geoserver"]["wps_plugin"]["download_url"]
+  source   node["geoserver"]["wps_plugin"]["download_url"]
+  checksum node["geoserver"]["wps_plugin"]["checksum"]
 end
 
 # Extract WPS plugin to GeoServer, waiting for Tomcat to start GeoServer
@@ -576,6 +580,37 @@ bash "extract GeoServer WPS plugin" do
   not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-wps-#{node["geoserver"]["version"]}.jar") }
 end
 
+##############################
+# Install GeoServer CSW Plugin
+##############################
+geoserver_csw_filename = filename_from_url(node["geoserver"]["csw_plugin"]["download_url"])
+
+remote_file "#{Chef::Config["file_cache_path"]}/#{geoserver_csw_filename}" do
+  source   node["geoserver"]["csw_plugin"]["download_url"]
+  checksum node["geoserver"]["csw_plugin"]["checksum"]
+end
+
+# Extract CSW plugin to GeoServer, waiting for Tomcat to start GeoServer
+# and create the plugins directory first. If it doesn't exist within 120
+# seconds, then there is probably a problem and the chef client should
+# stop.
+bash "extract GeoServer CSW plugin" do
+  cwd node["geoserver"]["prefix"]
+  code <<-EOH
+    while ! test -d "#{tomcat_home}/webapps/geoserver/WEB-INF/lib"; do
+      sleep 10
+      echo "Waiting for GeoServer lib directory to be created"
+    done
+    rm -rf geoserver-csw-plugin
+    unzip -o "#{Chef::Config["file_cache_path"]}/#{geoserver_csw_filename}" -d geoserver-csw-plugin
+    cp geoserver-csw-plugin/*.jar "#{tomcat_home}/webapps/geoserver/WEB-INF/lib/."
+    chown -R #{node["tomcat"]["user"]} "#{tomcat_home}/webapps/geoserver/WEB-INF/lib"
+  EOH
+  timeout 120
+  notifies :restart, "service[tomcat]"
+  not_if { ::File.exists?("#{tomcat_home}/webapps/geoserver/WEB-INF/lib/gs-csw-#{node["geoserver"]["version"]}.jar") }
+end
+
 ######################
 # Set up tomcat-native
 ######################
@@ -584,7 +619,8 @@ tomcat_native_home = "#{node["tomcat"]["prefix"]}/tomcat-native-#{node["tomcat-n
 tomcat_native_filename = filename_from_url(node["tomcat-native"]["download_url"])
 
 remote_file "#{Chef::Config["file_cache_path"]}/#{tomcat_native_filename}" do
-  source node["tomcat-native"]["download_url"]
+  source   node["tomcat-native"]["download_url"]
+  checksum node["tomcat-native"]["checksum"]
 end
 
 bash "extract tomcat-native" do

@@ -72,10 +72,15 @@ default["geoserver"]["download_url"]                      = "http://sourceforge.
 default["geoserver"]["checksum"]                          = "d84c75a55e77cc40a198470014d14983fbcb204dec253d7482b81f1c701f9f3f"
 default["geoserver"]["data_dir"]                          = "/opt/geoserver/data"
 default["geoserver"]["csw_plugin"]["download_url"]        = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-csw-plugin.zip"
+default["geoserver"]["csw_plugin"]["checksum"]            = "1215a440b71a71897d2dfc9dadee54d7e4f0c08b9e58403d524869e6ef42fe6a"
 default["geoserver"]["gdal_plugin"]["download_url"]       = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-gdal-plugin.zip"
+default["geoserver"]["gdal_plugin"]["checksum"]           = "ce98090783e13fb6073e571d674fbaac7ac2276346b4aa72032ea130400bc469"
 default["geoserver"]["monitoring_plugin"]["download_url"] = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-monitor-plugin.zip"
+default["geoserver"]["monitoring_plugin"]["checksum"]     = "4a7823e1059c255f43c7a0d1fc5b28436993b77292d3c20619aef6eb82dcf8db"
 default["geoserver"]["netcdf_plugin"]["download_url"]     = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-netcdf-plugin.zip"
+default["geoserver"]["netcdf_plugin"]["checksum"]         = "5c22db7150ff92fc6957b80373ea22a1a433d64c768a101f953e28ca5adc1697"
 default["geoserver"]["wps_plugin"]["download_url"]        = "http://sourceforge.net/projects/geoserver/files/GeoServer/2.19.2/extensions/geoserver-2.19.2-wps-plugin.zip"
+default["geoserver"]["wps_plugin"]["checksum"]            = "dc367278d4143952ff4c711600e083ffa72a80a47a4701ce98b4f36a219700ff"
 
 # GeoServer global configuration
 # This values are only set on the first installation and will NOT overwrite

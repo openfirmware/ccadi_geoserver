@@ -13,6 +13,7 @@ Installs:
     * PROJ data files (approx 600 MB)
     * SQLite 3.36.0
 * [GeoServer 2.19][geoserver]
+    * "[CSW][]" extension
     * "GDAL" extension
     * "[Importer][importer]" extension
     * "[Monitoring][monitoring]" extension
@@ -26,6 +27,7 @@ Any automated configuration of GeoServer is described in the "GeoServer Autoconf
 
 [ccadi]:         https://ccadi.ca/
 [certbot]:       https://certbot.eff.org/
+[csw]:           https://docs.geoserver.org/2.19.x/en/user/services/csw/index.html
 [gdal]:          https://gdal.org/
 [geoserver]:     http://geoserver.org/
 [importer]:      https://docs.geoserver.org/2.19.x/en/user/extensions/importer/index.html
