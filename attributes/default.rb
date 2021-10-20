@@ -51,11 +51,11 @@ default["proj"]["checksum"]      = "82f1345e5fa530c407cb1fc0752e83f8d08d2b987729
 default["proj"]["prefix"]        = "/opt/local"
 
 # Ant
-default["ant"]["version"]       = "1.10.11"
+default["ant"]["version"]       = "1.10.12"
 default["ant"]["prefix"]        = "/opt/java"
-default["ant"]["download_url"]  = "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.11-bin.tar.gz"
+default["ant"]["download_url"]  = "https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.12-bin.tar.gz"
 # Manually calculated SHA256:
-default["ant"]["checksum"]      = "0a3dc4624c863657daa609051763f12bfd286bc6da1d61ca48959ce3b94be0e7"
+default["ant"]["checksum"]      = "4b3b557279bae4fb80210a5679180fdae3498b44cfd13368e3386e2a21dd853b"
 
 # GDAL
 default["gdal"]["version"]       = "3.3.2"
