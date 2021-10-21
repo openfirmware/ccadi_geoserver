@@ -4,7 +4,8 @@ This cookbook will install GeoServer onto a node (machine/instance) using Chef I
 
 Installs:
 
-* [OpenJDK 17][]
+* [IBM Semeru Java 11 Development Kit][IBM Semeru]
+    * (GeoServer is not yet compatible with OpenJDK 17)
 * [Nginx][nginx]
 * [Apache Tomcat 9][tomcat]
     * Apache [Tomcat native][tomcat-native] plugins
@@ -30,11 +31,11 @@ Any automated configuration of GeoServer is described in the "GeoServer Autoconf
 [csw]:           https://docs.geoserver.org/2.19.x/en/user/services/csw/index.html
 [gdal]:          https://gdal.org/
 [geoserver]:     http://geoserver.org/
+[IBM Semeru]:    https://developer.ibm.com/languages/java/semeru-runtimes/
 [importer]:      https://docs.geoserver.org/2.19.x/en/user/extensions/importer/index.html
 [monitoring]:    https://docs.geoserver.org/2.19.x/en/user/extensions/monitoring/index.html
 [netcdf]:        https://docs.geoserver.org/2.19.x/en/user/extensions/netcdf/netcdf.html
 [nginx]:         https://nginx.org/en/
-[OpenJDK 17]:    https://jdk.java.net/17/
 [tomcat]:        https://tomcat.apache.org/
 [tomcat-native]: https://tomcat.apache.org/native-doc/
 [wps]:           https://docs.geoserver.org/2.19.x/en/user/services/wps/index.html

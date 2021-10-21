@@ -10,21 +10,21 @@ default["ccadi_geoserver"]["source_path"] = "/opt/src"
 # This should probably match the number of cores/VCPUs.
 default["jobs"] = 4
 
-# OpenJDK
-default["openjdk"]["version"]       = "17"
-default["openjdk"]["prefix"]        = "/opt/java"
-default["openjdk"]["download_url"]  = "https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz"
-default["openjdk"]["checksum"]      = "aef49cc7aa606de2044302e757fa94c8e144818e93487081c4fd319ca858134b"
+# IBM Semeru (JDK 11)
+default["openjdk"]["version"]      = "11.0.12+7"
+default["openjdk"]["prefix"]       = "/opt/java"
+default["openjdk"]["download_url"] = "https://github.com/ibmruntimes/semeru11-binaries/releases/download/jdk-11.0.12%2B7_openj9-0.27.0/ibm-semeru-open-jdk_x64_linux_11.0.12_7_openj9-0.27.0.tar.gz"
+default["openjdk"]["checksum"]     = "4c2d776f69e3ff7d01cd57c0938b7a7f058264425faf18e3708b905e93f915c4"
 
 # Apache Tomcat
-default["tomcat"]["version"]       = "9.0.53"
-default["tomcat"]["user"]          = "tomcat"
-default["tomcat"]["Xms"]           = "256m"
-default["tomcat"]["Xmx"]           = "4g"
-default["tomcat"]["prefix"]        = "/opt/tomcat"
-default["tomcat"]["download_url"]  = "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz"
+default["tomcat"]["version"]      = "9.0.53"
+default["tomcat"]["user"]         = "tomcat"
+default["tomcat"]["Xms"]          = "256m"
+default["tomcat"]["Xmx"]          = "4g"
+default["tomcat"]["prefix"]       = "/opt/tomcat"
+default["tomcat"]["download_url"] = "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz"
 # Manually calculated SHA256:
-default["tomcat"]["checksum"]      = "7b3e456ed76b0b42d99767985dc3774b22e2388834994f8539272eb7c05ab6fd"
+default["tomcat"]["checksum"]     = "7b3e456ed76b0b42d99767985dc3774b22e2388834994f8539272eb7c05ab6fd"
 
 # Apache Tomcat native plugin
 default["tomcat-native"]["version"]      = "1.2.31"
