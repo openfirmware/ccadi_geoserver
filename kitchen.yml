@@ -35,4 +35,6 @@ suites:
     attributes:
       certbot:
         enabled: false
+      geoserver:
+        proxy_base_url: "http://192.168.33.190/geoserver"
       jobs: 6
