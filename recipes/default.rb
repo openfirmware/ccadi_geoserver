@@ -150,6 +150,16 @@ service "tomcat" do
   action :nothing
 end
 
+# Remove default Tomcat applications
+# Note: this will delete any future webapp that has one of
+#       these names.
+%w(ROOT docs examples host-manager manager).each do |app|
+  directory "#{tomcat_home}/webapps/#{app}" do
+    recursive true
+    action :delete
+  end
+end
+
 ###############
 # Install nginx
 ###############
