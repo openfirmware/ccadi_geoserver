@@ -89,11 +89,23 @@ The policy name and group specify the storage organization of this cookbook in C
 
 ### Cookbook Attributes
 
-TODO: List the attributes that can be customized to override various settings.
+Instead of hard-coding the configuration values for the server software, we use the "[attributes][Chef Components]" system in Chef Infrastructure. This lets us set default values for software (such as versions, installation options, directory structure), as well as override those values later without having to update the cookbook.
+
+[Chef Components]: https://docs.chef.io/chef_overview/#components
+
+The default values for this cookbook are specified in the `attributes/default.rb` file. Most of the attributes are values normally customized when installing server software, and the attributes are grouped and named according to their source application/tool's terminology.
+
+An additional layer of default values is applied for "Test Kitchen" virtual machines used for testing this cookbook; these values are specified in `kitchen.yml` in the suite attributes section.
 
 ## Developing on this cookbook
 
-TODO: Explain installation of Chef Workstation and making changes to this cookbook
+This Chef Infrastructure cookbook can be cloned using Git to your local development machine. From there, you should install [Chef Workstation][] to have access to the development tools necessary for testing and deploying this cookbook.
+
+[Chef Workstation]: https://docs.chef.io/workstation/
+
+For local testing using a virtual machine, this cookbook is set up to use VirtualBox with Vagrant. It may be necessary for you to modify this if you are developing from a non-x86 machine.
+
+Versioning of the cookbook is specified in the `metadata.rb` file, and can be used to have multiple versions installed on a Chef Infrastructure Server. These multiple versions can be deployed to different servers. Note that Chef Infra *does not* use Git's tags or metadata for pushing cookbooks to Chef Server, and Chef will merely push the working tree (excluding any files/folders matching `chefignore`).
 
 ## GeoServer Autoconfiguration
 
