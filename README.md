@@ -95,9 +95,19 @@ TODO: List the attributes that can be customized to override various settings.
 
 TODO: Explain installation of Chef Workstation and making changes to this cookbook
 
-## GeoServer Autoconfiguration (TODO)
+## GeoServer Autoconfiguration
 
 This cookbook applies some additional automated setup steps for the GeoServer installation, making the administration of the GeoServer instance a bit more streamlined.
+
+* The default GeoServer password is changed away from `admin:geoserver`
+* The service configurations for CSW, WCS, WFS, WMS, and WPS will include CCADI information
+* The included sample layers for GeoServer are automatically removed
+* The server administration information has been updated
+* Adjusts some configuration values for Java Advanced Imaging API
+* Installs more EPSG code definitions
+* Relocates GeoServer data directory to outside of GeoServer application directory
+
+User accounts, stores, layers, etc must still be configured through the web UI.
 
 ## License (TODO)
 
