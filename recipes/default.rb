@@ -198,13 +198,17 @@ end
 # In testing, getting certificates from Let's Encrypt doesn't work as the test
 # VM isn't internet-facing.
 if node["certbot"]["enabled"]
-  domains = node["ccadi_geoserver"]["domains"].join(",")
+  domains = node["ccadi_geoserver"]["domains"]
 
-  bash "get certificate using certbot" do
-    code "certbot certonly --nginx -n \
-    --domains #{domains} \
-    --agree-tos \
-    -m #{node["certbot"]["email"]}"
+  domains.each do |domain|
+    bash "get certificate using certbot" do
+      code "certbot certonly \
+      --nginx                \
+      --non-interactive      \
+      --domains #{domain}   \
+      --agree-tos            \
+      -m #{node["certbot"]["email"]}"
+    end
   end
 end
 
@@ -212,7 +216,7 @@ end
 template "/etc/nginx/conf.d/geoserver-http.conf" do
   source "default/geoserver-http-vhost.conf"
   variables({
-    domains: node["ccadi_geoserver"]["domains"]
+    domains: domains
   })
   notifies :reload, "service[nginx]"
 end
@@ -221,7 +225,7 @@ end
 template "/etc/nginx/conf.d/geoserver-https.conf" do
   source "default/geoserver-https-vhost.conf"
   variables({
-    domains:    node["ccadi_geoserver"]["domains"],
+    domains:    domains,
     selfsigned: !node["certbot"]["enabled"]
   })
   notifies :reload, "service[nginx]"
