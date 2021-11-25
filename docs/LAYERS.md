@@ -4,11 +4,29 @@ Here is a list of some of the remote data sources that have been tested with Geo
 
 I plan to use this as a reference for re-setting up layers, as well as tracking down potential issues when re-serving data.
 
-## Data Store: Arctic SDI
+## Data Store: Arctic SDI WMS
+
+`http://basemap.arctic-sdi.org/mapcache/wms/?request=GetCapabilities&service=wms&version=1.1.1`
+
+Added as a test of cascading their WMS.
+
+### Layer: Arctic SDI Base Map
+
+Start by using the New Layer interface to publish `arctic_cascading`.
+
+#### GeoServer OpenLayer Client
+
+Works as expected, displaying in `EPSG:3571`.
+
+#### QGIS 3.22 (Linux)
+
+Works as expected, displaying in `EPSG:3571`.
+
+## Data Store: Arctic SDI WMTS
 
 `http://basemap.arctic-sdi.org/mapcache/wmts/?request=GetCapabilities&service=wmts`
 
-Added as a test of cascading their WMTS.
+Added as a test of cascading their WMTS. Due to the errors found below, I recommend using the WMS instead of the WMTS.
 
 ### Layer: Arctic SDI Base Map
 
@@ -28,11 +46,13 @@ No tiles were found in requested extent
 
 **Error:** For WMS from this GeoServer, QGIS adds the layer but the map remains empty. Changing from `EPSG:4326` to `EPSG:3571` projection has no effect.
 
-## Data Store: Arctic Web Map
+## Data Store: Arctic Web Map (as WMS)
 
 `http://tiles.arcticconnect.ca/mapproxy/service?REQUEST=GetCapabilities`
 
 Arctic Web Map is the custom polar-focused map tiles and data (from OpenStreetMap Contributors and others). It is available via a web API for XYZ slippy tiles system (using the `mod_tile` system) or via WMS/WMTS (using the `mapproxy` system). We will use the latter to cascade.
+
+Note: Using the WMTS data source instead is not recommended. It seems to cause clients to get repeated attribution labels across the map tiles. Rendering from the WMS to this GeoServer's WMS/WMTS/GWC is less "buggy" and has higher map image quality (no scaling/interpolation).
 
 ### Layer: Arctic Web Map v2
 
@@ -46,13 +66,13 @@ Tile caching can be configured with GeoWebCache (GWC), although you should start
 
 Map renders fine with WMS 1.1.1.
 
-#### QGIS 3.16 (MacOS)
+#### QGIS 3.22 (Linux)
 
 Via WMS from this GeoServer, the layer loads normally when using `EPSG:3573` projection. Any slowdowns loading tiles are from the parent ArcticWebMap tile server, particularly for uncached regions.
 
-**Error:** Via WMTS, the `image/jpeg` layer is "added" but nothing is displayed on the map and no errors are shown.
+Via WMTS, the `image/jpeg` layer works as expected.
 
-**Bug:** Via WMTS, the `image/png` layer is shown on the map. The quality is not good and may be due to scaling/resolution differences between the client and the server's gridsets. Attribution is also repeated across the image.
+Via WMTS, the `image/png` layer works as expected.
 
 ## Data Store: GEBCO
 
@@ -66,11 +86,11 @@ Start by using the New Layer interface to publish `GEBCO_LATEST`.
 
 Map renders fine with WMS 1.1.1.
 
-#### QGIS 3.16 (MacOS)
+#### QGIS 3.22 (Linux)
 
 Via WMS from this GeoServer, the layer loads normally when using `EPSG:4326` projection. It also reprojects cleanly to `EPSG:3857` and `EPSG:3573`.
 
-**Error:** WMTS `image/jpeg` fails.
+WMTS `image/jpeg` works.
 
 WMTS `image/png` works.
 
@@ -80,17 +100,17 @@ WMTS `image/png` works.
 
 ### Layer: Northern Hemisphere Daily Sea Ice Concentration
 
-Start by using the New Layer interface to publish `g02135_concentration_raster_daily_n`.
+Start by using the New Layer interface to publish `g02135_concentration_raster_daily_n`. Set the projections both to `EPSG:3573` (or your choice).
 
 #### GeoServer OpenLayer Client
 
-Map renders fine with WMS 1.1.1. Projection should be manually switched (using the URL parameters) to see the map in the proper `EPSG:3413` projection.
+Map renders fine with WMS 1.1.1. OpenLayers will use the "Declared" projection set on the layer.
 
-#### QGIS 3.16 (MacOS)
+#### QGIS 3.22 (Linux)
 
-Via WMS from this GeoServer, the layer loads normally when using `EPSG:3413` projection.
+Via WMS from this GeoServer, the layer loads normally when using `EPSG:3573` projection.
 
-**Error:** WMTS `image/jpeg` fails.
+WMTS `image/jpeg` works.
 
 WMTS `image/png` works.
 
@@ -102,21 +122,19 @@ This project is for an interactive web application that lets readers follow the 
 
 ### Layer: Soper's World Base Map
 
-Start by using the New Layer interface to publish `base_map_3413`.
-
-The layer SRS must be changed to `EPSG:3413`.
+Start by using the New Layer interface to publish `base_map_3573`.
 
 #### GeoServer OpenLayer Client
 
-Map loads, but very slowly (due to upstream server). As this WMS is not cached, it is not the recommended way to load this layer. Instead, the GeoWebCache WMS/WMTS should be used.
+Map loads, but very slowly (due to upstream server). As this GeoServer's primary WMS endpoint is not cached, it is not the recommended way to load this layer. Instead, the GeoWebCache WMS/WMTS endpoint should be used.
 
 The GWC layer preview loads very quickly once the cache is filled.
 
-#### QGIS 3.16 (MacOS)
+#### QGIS 3.22 (Linux)
 
-Via WMS from this GeoServer, the layer loads normally when using `EPSG:3413` projection.
+Via WMS from this GeoServer, the layer loads normally when using `EPSG:3573` projection.
 
-**Error:** WMTS `image/jpeg` fails.
+WMTS `image/jpeg` works.
 
 WMTS `image/png` works.
 
@@ -130,8 +148,8 @@ The layer SRS must be changed to `EPSG:3413`.
 
 Map loads.
 
-#### QGIS 3.16 (MacOS)
+#### QGIS 3.22 (Linux)
 
-**Error:** Via WMS, the bottom half of the map (southern section) is not rendered.
+Via WMS, the map renders correctly.
 
-**Error:** Via WMTS, nothing is added to the map.
+**Error:** Via WMTS, a bottom section of the hand-drawn map is missing.
