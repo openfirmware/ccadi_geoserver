@@ -203,12 +203,12 @@ directory node["certbot"]["challenge_path"] do
   action :create
 end
 
+domains = node["ccadi_geoserver"]["domains"]
+
 # Use an attribute flag to only enable fetching HTTPS certificates in production.
 # In testing, getting certificates from Let's Encrypt doesn't work as the test
 # VM isn't internet-facing.
 if node["certbot"]["enabled"]
-  domains = node["ccadi_geoserver"]["domains"]
-
   domains.each do |domain|
     bash "get certificate using certbot" do
       code "certbot certonly \
