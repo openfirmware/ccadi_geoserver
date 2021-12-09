@@ -160,6 +160,15 @@ end
   end
 end
 
+# Install log rotation scripts to prevent disk filling up from
+# Tomcat logs files
+template "/etc/logrotate.d/tomcat.conf" do
+  source "logrotate.d/tomcat.conf"
+  variables({
+    log_path: "#{tomcat_home}/logs/catalina.out"
+  })
+end
+
 ###############
 # Install nginx
 ###############
