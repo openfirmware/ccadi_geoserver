@@ -57,9 +57,9 @@ The primary method of deploying this cookbook is by using a central Chef Infra S
 Once a Chef Infra Server has been set up, a developer configures a certificate for accessing the Chef Server. Then a developer may push the latest cookbook to Chef Infra Server, assuming Chef configuration (`~/.chef`) has been set:
 
 ```
-bash$ chef push (basename $PWD) Policyfile.rb
+bash$ chef push $(basename $PWD) Policyfile.rb
 
-fish$ chef push $(basename $PWD) Policyfile.rb
+fish$ chef push (basename $PWD) Policyfile.rb
 ```
 
 This will replace the server's copy of the cookbook, but only for the version specified in `metadata.rb`. This allows older cookbook versions to be used by stable installations.
