@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec <%= @binary %> --quiet --syslog --label=<%= @label %> --keep=<%= @keep_count %> <%= @datasets %>

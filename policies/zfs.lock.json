@@ -1,5 +1,5 @@
 {
-  "revision_id": "061e041412532a811a54fdb51bec20d34c8742d1e24b4b72b138cd03e272a90b",
+  "revision_id": "3ed6ad24c8473b2642c07de0d3045cd38ba6299c0a4c3897cc16bcf1bec528f9",
   "name": "ccadi_geoserver",
   "run_list": [
     "recipe[ccadi_geoserver::zfs]",
@@ -11,18 +11,19 @@
   "cookbook_locks": {
     "ccadi_geoserver": {
       "version": "0.1.0",
-      "identifier": "8860466e12e7793b992d359206ebd3e81fb5daf2",
-      "dotted_decimal_identifier": "38386452443359097.16775443077269227.232993917885170",
+      "identifier": "3efebd10e5087af9565e8d9a20bcf72cf0d1c5b7",
+      "dotted_decimal_identifier": "17731536541780090.70182233303556284.271772390901175",
       "source": "..",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": "git@github.com:openfirmware/ccadi_geoserver.git",
-        "revision": "a1cd26d6a9c1cd101709bf2e40f3e6069f23de2a",
+        "revision": "48c43a9edca4dc782db68ecc9bf60bf8d258bfbd",
         "working_tree_clean": false,
-        "published": false,
+        "published": true,
         "synchronized_remote_branches": [
-
+          "gitlab2/master",
+          "origin/master"
         ]
       },
       "source_options": {
