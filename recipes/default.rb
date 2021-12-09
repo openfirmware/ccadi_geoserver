@@ -701,7 +701,7 @@ end
 # Install default CSW configuration, only on first run.
 cookbook_file "install default CSW configuration" do
   path "#{geoserver_data}/csw.xml"
-  source "csw.xml"
+  source "geoserver/csw.xml"
   notifies :restart, "service[tomcat]"
   action :nothing
 end
@@ -709,7 +709,7 @@ end
 # Install default WCS configuration, only on first run.
 cookbook_file "install default WCS configuration" do
   path "#{geoserver_data}/wcs.xml"
-  source "wcs.xml"
+  source "geoserver/wcs.xml"
   notifies :restart, "service[tomcat]"
   action :nothing
 end
@@ -717,7 +717,7 @@ end
 # Install default WFS configuration, only on first run.
 cookbook_file "install default WFS configuration" do
   path "#{geoserver_data}/wfs.xml"
-  source "wfs.xml"
+  source "geoserver/wfs.xml"
   notifies :restart, "service[tomcat]"
   action :nothing
 end
@@ -725,7 +725,7 @@ end
 # Install default WMS configuration, only on first run.
 cookbook_file "install default WMS configuration" do
   path "#{geoserver_data}/wms.xml"
-  source "wms.xml"
+  source "geoserver/wms.xml"
   notifies :restart, "service[tomcat]"
   action :nothing
 end
@@ -733,7 +733,7 @@ end
 # Install default WPS configuration, only on first run.
 cookbook_file "install default WPS configuration" do
   path "#{geoserver_data}/wps.xml"
-  source "wps.xml"
+  source "geoserver/wps.xml"
   notifies :restart, "service[tomcat]"
   action :nothing
 end
@@ -773,7 +773,7 @@ end
 
 # Install extra CRS definitions
 cookbook_file "#{geoserver_data}/user_projections/epsg.properties" do
-  source "epsg.properties"
+  source "geoserver/epsg.properties"
   owner node["tomcat"]["user"]
   group node["tomcat"]["user"]
   notifies :restart, "service[tomcat]"
