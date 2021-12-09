@@ -42,9 +42,37 @@ execute "install ZFS" do
 	not_if "yum list installed | grep -q -E '^zfs\.x86_64'"
 end
 
-# Load ZFS module
+# Load ZFS module at startup
 file "/etc/modules-load.d/zfs.conf" do
 	content "zfs"
 end
 
+# Load ZFS module immediately
 execute "/sbin/modprobe zfs"
+
+# Enable ZFS services
+service "zfs-import-cache.service" do
+	action :enable
+end
+
+service "zfs-import-scan.service" do
+	action :enable
+end
+
+service "zfs-mount.service" do
+	action :enable
+end
+
+# Disable automatic integration of ZFS dataset sharing properties
+# with smb/nfs/etc
+service "zfs-share.service" do
+	action :disable
+end
+
+service "zfs-zed.service" do
+	action :enable
+end
+
+service "zfs.target" do
+	action :enable
+end
