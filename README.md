@@ -99,6 +99,22 @@ The default values for this cookbook are specified in the `attributes/default.rb
 
 An additional layer of default values is applied for "Test Kitchen" virtual machines used for testing this cookbook; these values are specified in `kitchen.yml` in the suite attributes section.
 
+### Cookbook Recipes
+
+There are two recipes currently, `default` and `zfs`.
+
+The `default` recipe installs everything listed in the first section. This recipe is also used by the default `Policyfile.rb`, and is stored on the GeoSensorWeb Lab Chef Infra Server as policy name and group (both the same) `ccadi_geoserver`.
+
+The `zfs` recipe is separate and only installs the CentOS 7 packages and tools necessary to run OpenZFS. This can then be used by a system administrator to manually configure ZFS pools for snapshots and compression.
+
+### Cookbook Policies
+
+Each policy is a strict set of configuration and settings to deploy code onto a node (server). Essentially, it is a file that lists exact versions and prevents accidental upgrades/downgrades. Each policy is developed locally as a Ruby file (`.rb`), then the configuration validated and sent to the Chef Infra Server using the `chef push` command.
+
+When pushed to the central server, the policy file must be registed under a policy name and group on the server. For our deployments these are the same as the cookbook name (`ccadi_geoserver`) to keep things simple.
+
+The primary policy file is `Policyfile.rb` and this is intended for production use. Alternative policies for specific usages and cases are stored in the `policies` directory and may also be pushed to Chef Infra Server.
+
 ## Developing on this cookbook
 
 This Chef Infrastructure cookbook can be cloned using Git to your local development machine. From there, you should install [Chef Workstation][] to have access to the development tools necessary for testing and deploying this cookbook.

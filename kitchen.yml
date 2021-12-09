@@ -25,7 +25,7 @@ platforms:
 suites:
   - name: default
     provisioner:
-      policyfile: Policyfile.rb
+      policyfile: policies/zfs.rb
     verifier:
       inspec_tests:
         - test/integration/default
