@@ -51,6 +51,18 @@ bash "install development tools" do
   EOF
 end
 
+# Create resource to refer to in other resource notifications
+service "rsyslog" do
+  supports [:restart]
+  action :nothing
+end
+
+# Install CentOS 7 messages filter for session slice messages
+cookbook_file "/etc/rsyslog.d/ignore-systemd-session-slice.conf" do
+  source "rsyslogd/ignore-systemd-session-slice.conf"
+  notifies :restart, "service[rsyslog]"
+end
+
 #################
 # Install OpenJDK
 #################
